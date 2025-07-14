@@ -1,7 +1,8 @@
-import { View, Text, ImageBackground, StatusBar } from "react-native";
-import React from "react";
+import { View, Text, ImageBackground, StatusBar, Platform } from "react-native";
+import React, { useEffect } from "react";
 import { ScreenWrapperProps } from "@/types";
 import { colors } from "@/constants/theme";
+import * as SystemUI from "expo-system-ui";
 
 const ScreenWrapper = ({
   style,
@@ -15,6 +16,7 @@ const ScreenWrapper = ({
       style={{
         flex: 1,
         backgroundColor: isModal ? colors.white : colors.neutral900,
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
       imageStyle={{ opacity: showPattern ? bgOpacity : 0 }}
       source={require("@/assets/images/bgPattern.png")}
@@ -22,7 +24,8 @@ const ScreenWrapper = ({
       <View style={[{ flex: 1 }, style]}>
         <StatusBar
           barStyle="light-content"
-          backgroundColor={colors.neutral900}
+          translucent
+          backgroundColor={"transparent"}
         />
         {children}
       </View>
