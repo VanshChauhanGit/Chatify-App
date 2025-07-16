@@ -11,8 +11,8 @@ import { useRouter } from "expo-router";
 const Welcome = () => {
   const router = useRouter();
   return (
-    <ScreenWrapper showPattern>
-      <View className="flex-1 items-center justify-evenly">
+    <ScreenWrapper showPattern bgOpacity={0.5}>
+      <View className="items-center flex-1 justify-evenly">
         <Typo color={colors.white} size={43} fontWeight={"900"}>
           Chatify
         </Typo>

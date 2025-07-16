@@ -18,6 +18,7 @@ const ScreenWrapper = ({
         backgroundColor: isModal ? colors.white : colors.neutral900,
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
+      // className="px-4"
       imageStyle={{ opacity: showPattern ? bgOpacity : 0 }}
       source={require("@/assets/images/bgPattern.png")}
     >
