@@ -19,6 +19,7 @@ import { verticalScale } from "@/utils/styling";
 import { useRouter } from "expo-router";
 import Button from "@/components/Button";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+import { useAuth } from "@/contexts/AuthContext";
 
 const register = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,14 +29,22 @@ const register = () => {
   const emailRef = useRef("");
   const passwordRef = useRef("");
 
+  const { signIn } = useAuth();
+
   const handleSubmit = async () => {
-    setIsLoading(true);
     if (!emailRef.current || !passwordRef.current) {
-      setIsLoading(false);
-      Alert.alert("Login", "Please fill all the fields");
+      Alert.alert("Sign In", "Please fill all the fields");
       return;
     }
-    setIsLoading(false);
+
+    try {
+      setIsLoading(true);
+      await signIn(emailRef.current, passwordRef.current);
+    } catch (error: any) {
+      Alert.alert("Sign In Error", error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -44,7 +53,7 @@ const register = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScreenWrapper showPattern bgOpacity={0.5}>
-        <View className="flex-1 justify-between">
+        <View className="justify-between flex-1">
           <View className="flex-row items-center justify-between px-4">
             <BackButton />
             <Typo color={colors.white} size={17}>
@@ -55,7 +64,7 @@ const register = () => {
           <Animated.View
             entering={FadeInDown.delay(100).duration(1000).springify()}
             exiting={FadeInUp.duration(1000).springify()}
-            className="flex-1 bg-white mt-10"
+            className="flex-1 mt-10 bg-white"
             style={styles.content}
           >
             <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
@@ -91,14 +100,14 @@ const register = () => {
                   onChangeText={(value) => (passwordRef.current = value)}
                 />
 
-                <View className="mt-5 gap-3">
+                <View className="gap-3 mt-5">
                   <Button loading={isLoading} onPress={handleSubmit}>
                     <Typo size={18} fontWeight={"bold"}>
                       Login
                     </Typo>
                   </Button>
 
-                  <View className="flex-row justify-center align-center gap-2">
+                  <View className="flex-row justify-center gap-2 align-center">
                     <Typo>Don't have an account ?</Typo>
                     <Pressable onPress={() => router.push("/(auth)/register")}>
                       <Typo color={colors.primaryDark}>Sign Up</Typo>
