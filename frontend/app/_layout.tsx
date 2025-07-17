@@ -1,14 +1,16 @@
-import { View, Text } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
-
 import * as SystemUI from "expo-system-ui";
-import { colors } from "@/constants/theme";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 SystemUI.setBackgroundColorAsync("transparent"); // or transparent if you want that
 
-const _layout = () => {
-  return <Stack screenOptions={{ headerShown: false }} />;
+const RootLayout = () => {
+  return (
+    <AuthProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </AuthProvider>
+  );
 };
 
-export default _layout;
+export default RootLayout;

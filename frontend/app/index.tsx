@@ -1,8 +1,6 @@
 import "../global.css";
-import { View, Text, StatusBar } from "react-native";
+import { View, StatusBar } from "react-native";
 import React, { useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { colors } from "@/constants/theme";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useRouter } from "expo-router";
 
