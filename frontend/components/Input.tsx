@@ -1,28 +1,46 @@
-import { View, Text, TextInput } from "react-native";
+import { View, TextInput, Pressable } from "react-native";
 import React, { useState } from "react";
 import { InputProps } from "@/types";
 import { colors } from "@/constants/theme";
+import { EyeIcon, EyeSlashIcon } from "phosphor-react-native";
 
 const Input = (props: InputProps) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [secure, setSecure] = useState(props.type === "password");
+
+  const toggleSecure = () => setSecure((prev) => !prev);
+  const showToggle = props.type === "password";
+
   return (
     <View
       style={[
-        props.containerStyle && props.containerStyle,
+        props.containerStyle,
         isFocused && { borderColor: colors.primary },
       ]}
       className="flex-row bg-neutral100 items-center justify-center px-4 py-2 border border-neutral200 rounded-full gap-2"
     >
       {props.icon && props.icon}
+
       <TextInput
         className="flex-1 text-text text-lg"
         placeholderTextColor={colors.neutral500}
-        ref={props.inputRef && props.inputRef}
-        style={[props.inputStyle && props.inputStyle]}
+        ref={props.inputRef}
+        style={props.inputStyle}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        secureTextEntry={secure}
         {...props}
       />
+
+      {showToggle && (
+        <Pressable onPress={toggleSecure}>
+          {secure ? (
+            <EyeSlashIcon size={22} color={colors.neutral600} />
+          ) : (
+            <EyeIcon size={22} color={colors.neutral600} />
+          )}
+        </Pressable>
+      )}
     </View>
   );
 };
