@@ -12,6 +12,7 @@ const UserSchema = new Schema<UserProps>({
   password: {
     type: String,
     required: true,
+    minlength: 8,
   },
   name: {
     type: String,
@@ -21,6 +22,10 @@ const UserSchema = new Schema<UserProps>({
   avatar: {
     type: String,
     default: "",
+  },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
   },
   created: {
     type: Date,
