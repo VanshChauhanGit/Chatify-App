@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -21,8 +20,30 @@ import Button from "@/components/Button";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { useAuth } from "@/contexts/AuthContext";
 
+const validateEmail = (value: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!value.trim()) return "Email is required!";
+  if (!emailRegex.test(value)) return "Email is invalid!";
+  return "";
+};
+
+const validatePassword = (value: string) => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+  if (!value) return "Password is required!";
+  if (!passwordRegex.test(value))
+    return "Min 8 characters, must include uppercase, lowercase, and number!";
+  return "";
+};
+
 const register = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
 
   const router = useRouter();
 
@@ -31,17 +52,31 @@ const register = () => {
 
   const { signIn } = useAuth();
 
+  const handleChange = (field: string, value: string) => {
+    if (field === "email") {
+      setEmail(value);
+      setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    } else if (field === "password") {
+      setPassword(value);
+      setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!emailRef.current || !passwordRef.current) {
-      Alert.alert("Sign In", "Please fill all the fields");
+    const emailErr = validateEmail(email);
+    const passwordErr = validatePassword(password);
+
+    if (emailErr || passwordErr) {
+      setErrors({ email: emailErr, password: passwordErr });
+      Alert.alert("Sign Up", "Please fill all the fields");
       return;
     }
 
     try {
       setIsLoading(true);
-      await signIn(emailRef.current, passwordRef.current);
+      await signIn(email, password);
     } catch (error: any) {
-      Alert.alert("Sign In Error", error.message);
+      Alert.alert("Sign In", error.message);
     } finally {
       setIsLoading(false);
     }
@@ -78,27 +113,43 @@ const register = () => {
                   </Typo>
                 </View>
 
-                <Input
-                  placeholder="Enter your email"
-                  icon={
-                    <Icon.AtIcon
-                      size={verticalScale(24)}
-                      color={colors.neutral600}
-                    />
-                  }
-                  onChangeText={(value) => (emailRef.current = value)}
-                />
-                <Input
-                  placeholder="Enter your password"
-                  secureTextEntry={true}
-                  icon={
-                    <Icon.LockIcon
-                      size={verticalScale(24)}
-                      color={colors.neutral600}
-                    />
-                  }
-                  onChangeText={(value) => (passwordRef.current = value)}
-                />
+                <View>
+                  <Input
+                    placeholder="Enter your email"
+                    value={email}
+                    onChangeText={(value) => handleChange("email", value)}
+                    icon={
+                      <Icon.AtIcon
+                        size={verticalScale(24)}
+                        color={colors.neutral600}
+                      />
+                    }
+                  />
+                  {errors.email ? (
+                    <Typo size={12} color="red">
+                      {errors.email}
+                    </Typo>
+                  ) : null}
+                </View>
+                <View>
+                  <Input
+                    placeholder="Enter your password"
+                    type="password"
+                    value={password}
+                    onChangeText={(value) => handleChange("password", value)}
+                    icon={
+                      <Icon.LockIcon
+                        size={verticalScale(24)}
+                        color={colors.neutral600}
+                      />
+                    }
+                  />
+                  {errors.password ? (
+                    <Typo size={12} color="red">
+                      {errors.password}
+                    </Typo>
+                  ) : null}
+                </View>
 
                 <View className="gap-3 mt-5">
                   <Button loading={isLoading} onPress={handleSubmit}>

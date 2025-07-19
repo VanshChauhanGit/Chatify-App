@@ -29,7 +29,7 @@ const validateName = (value: string) => {
   }
 
   if (trimmed.length < 3) {
-    return "Name must be at least 3 characters long";
+    return "Name must be at least 3 characters long!";
   }
 
   return "";
@@ -38,7 +38,7 @@ const validateName = (value: string) => {
 const validateEmail = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!value.trim()) return "Email is required";
-  if (!emailRegex.test(value)) return "Email is invalid";
+  if (!emailRegex.test(value)) return "Email is invalid!";
   return "";
 };
 
@@ -46,7 +46,7 @@ const validatePassword = (value: string) => {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
   if (!value) return "Password is required";
   if (!passwordRegex.test(value))
-    return "Min 8 characters, must include uppercase, lowercase, and number";
+    return "Min 8 characters, must include uppercase, lowercase, and number1";
   return "";
 };
 
