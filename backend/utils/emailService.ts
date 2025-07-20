@@ -2,6 +2,7 @@ import { Response } from "express";
 import bcrypt from "bcryptjs";
 import UserOTPVerification from "../models/UserOTPVerification";
 import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -22,8 +23,18 @@ export const sendOTPVerificationEmail = async (
       createdAt: new Date(),
     });
 
-    const { data, error } = await resend.emails.send({
-      from: "Chatify <chatify@resend.dev>",
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailInfo = {
+      from: "Chatify <Chatify.app1@gmail.com>",
       to: email,
       subject: "Chatify OTP Verification",
       text: `Your OTP code is: ${otp}. This code will expire in 10 minutes.`,
@@ -47,16 +58,11 @@ export const sendOTPVerificationEmail = async (
           </div>
         </div>
       `,
-    });
+    };
 
-    if (error) {
-      console.error("Failed to send verification OTP Email:", error);
-      return { data, error };
-    }
+    const info = await transporter.sendMail(mailInfo);
 
     await newOTPVerification.save();
-
-    return { data, error };
   } catch (error) {
     console.error("Failed to send verification OTP Email:", error);
 
