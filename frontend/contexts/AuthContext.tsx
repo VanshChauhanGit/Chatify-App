@@ -19,7 +19,6 @@ export const AuthContext = createContext<AuthContextProps>({
   signIn: async () => {},
   signUp: async () => {},
   signOut: async () => {},
-  verifyOtp: async () => {},
   updateToken: async () => {},
 });
 
@@ -106,19 +105,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     router.replace("/(auth)/welcome");
   };
 
-  const verifyOtp = async (email: string, otp: string) => {
-    const response = await verifyEmailOTP(email, otp);
-    if (response.success === false) {
-      Alert.alert("Email Verification", response.message);
-      return;
-    }
-    await updateToken(response.token);
-    router.replace("/(main)/home" as any);
-  };
-
   return (
     <AuthContext.Provider
-      value={{ token, user, signIn, signUp, verifyOtp, signOut, updateToken }}
+      value={{ token, user, signIn, signUp, signOut, updateToken }}
     >
       {children}
     </AuthContext.Provider>

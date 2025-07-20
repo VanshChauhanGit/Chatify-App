@@ -22,7 +22,7 @@ import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { useAuth } from "@/contexts/AuthContext";
 import { verticalScale } from "@/utils/styling";
 import ResendOtpButton from "@/components/ResendOtpButton";
-import { resendVerifyEmailOTP } from "@/services/authService";
+import { resendVerifyEmailOTP, verifyEmailOTP } from "@/services/authService";
 
 const VerifyOtp = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +31,7 @@ const VerifyOtp = () => {
 
   const router = useRouter();
   const { email } = useLocalSearchParams();
-  const { verifyOtp } = useAuth();
+  const { updateToken } = useAuth();
 
   const handleSubmit = async () => {
     if (!otp || otp.length !== 6) {
@@ -41,8 +41,22 @@ const VerifyOtp = () => {
 
     try {
       setIsLoading(true);
-      await verifyOtp(email as string, otp);
+      const response = await verifyEmailOTP(email as string, otp);
+
+      console.log("Response at VerifyOtp:", response);
+
+      if (response.success == false) {
+        setError(response.msg || "Verification failed");
+        return;
+      }
+
+      setError("");
+
+      await updateToken(response.token);
+
+      router.replace("/(main)/home" as any);
     } catch (error: any) {
+      setError(error?.message || "Verification failed");
       Alert.alert(
         "Email Verification",
         error?.message || "Verification failed"

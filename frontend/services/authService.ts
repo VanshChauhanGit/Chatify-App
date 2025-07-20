@@ -42,11 +42,14 @@ export const verifyEmailOTP = async (email: string, otp: string) => {
       email,
       otp,
     });
+
+    console.log("RESPONSE AT AuthService:::::", response);
+
     return response.data;
   } catch (error: any) {
     console.log("got error:", error);
-    const msg = error?.response?.data?.message || "Verification Failed!";
-    throw new Error(msg);
+    // const msg = error?.response?.data?.message || "Verification Failed!";
+    // throw new Error(msg);
   }
 };
 
@@ -56,12 +59,8 @@ export const resendVerifyEmailOTP = async (email: string) => {
       email,
     });
 
-    console.log("resendVerifyEmailOTP", response);
-
     return response.data;
   } catch (error: any) {
     console.log("got error:", error);
-    const msg = error?.response?.data?.message || "Resend Failed!";
-    throw new Error(msg);
   }
 };

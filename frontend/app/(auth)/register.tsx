@@ -86,7 +86,7 @@ const register = () => {
 
     if (nameErr || emailErr || passwordErr) {
       setErrors({ name: nameErr, email: emailErr, password: passwordErr });
-      Alert.alert("Sign Up", "Please fill all the fields");
+      // Alert.alert("Sign Up", "Please fill all the fields");
       return;
     }
 
