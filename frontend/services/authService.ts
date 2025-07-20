@@ -49,3 +49,19 @@ export const verifyEmailOTP = async (email: string, otp: string) => {
     throw new Error(msg);
   }
 };
+
+export const resendVerifyEmailOTP = async (email: string) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/resend-otp`, {
+      email,
+    });
+
+    console.log("resendVerifyEmailOTP", response);
+
+    return response.data;
+  } catch (error: any) {
+    console.log("got error:", error);
+    const msg = error?.response?.data?.message || "Resend Failed!";
+    throw new Error(msg);
+  }
+};

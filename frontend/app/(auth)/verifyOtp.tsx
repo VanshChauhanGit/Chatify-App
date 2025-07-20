@@ -7,6 +7,7 @@ import {
   ScrollView,
   Pressable,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
@@ -20,6 +21,8 @@ import Button from "@/components/Button";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { useAuth } from "@/contexts/AuthContext";
 import { verticalScale } from "@/utils/styling";
+import ResendOtpButton from "@/components/ResendOtpButton";
+import { resendVerifyEmailOTP } from "@/services/authService";
 
 const VerifyOtp = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +49,14 @@ const VerifyOtp = () => {
       );
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      await resendVerifyEmailOTP(email as string);
+    } catch (error: any) {
+      Alert.alert("Resend OTP", error?.message || "OTP Resend failed!");
     }
   };
 
@@ -81,21 +92,23 @@ const VerifyOtp = () => {
                 </View>
 
                 {/* OTP Input */}
-                <Input
-                  keyboardType="number-pad"
-                  maxLength={6}
-                  value={otp}
-                  onChangeText={setOtp}
-                  placeholder="Enter OTP"
-                  icon={
-                    <Icon.EnvelopeSimpleIcon
-                      size={verticalScale(24)}
-                      color={colors.neutral600}
-                    />
-                  }
-                />
+                <View>
+                  <Input
+                    keyboardType="number-pad"
+                    maxLength={6}
+                    value={otp}
+                    onChangeText={setOtp}
+                    placeholder="Enter OTP"
+                    icon={
+                      <Icon.EnvelopeSimpleIcon
+                        size={verticalScale(24)}
+                        color={colors.neutral600}
+                      />
+                    }
+                  />
 
-                {error ? <Typo color="red">{error}</Typo> : null}
+                  {error ? <Typo color="red">{error}</Typo> : null}
+                </View>
 
                 <View className="gap-3 mt-5">
                   <Button loading={isLoading} onPress={handleSubmit}>
@@ -104,6 +117,9 @@ const VerifyOtp = () => {
                     </Typo>
                   </Button>
                 </View>
+
+                {/* Resend OTP */}
+                <ResendOtpButton onResend={handleResendOtp} />
               </View>
             </ScrollView>
           </Animated.View>

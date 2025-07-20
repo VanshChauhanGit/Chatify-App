@@ -182,7 +182,9 @@ export const resendVerifyEmailOTP = async (
     }
     await UserOTPVerification.deleteMany({ email });
     await sendOTPVerificationEmail({ email }, res);
-    res.status(200).json({ success: true, msg: "OTP sent to email!" });
+    res
+      .status(200)
+      .json({ success: true, msg: "OTP has been resended to email!" });
   } catch (error) {
     console.error("Error sending OTP:", error);
     res.status(500).json({ success: false, msg: "Server error" });
