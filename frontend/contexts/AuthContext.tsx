@@ -1,4 +1,4 @@
-import { login, register } from "@/services/authService";
+import { login, register, verifyEmailOTP } from "@/services/authService";
 import { AuthContextProps, DecodedTokenProps, UserProps } from "@/types";
 import { useRouter } from "expo-router";
 import {
@@ -11,6 +11,7 @@ import {
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
+import { Alert } from "react-native";
 
 export const AuthContext = createContext<AuthContextProps>({
   token: null,
@@ -18,6 +19,7 @@ export const AuthContext = createContext<AuthContextProps>({
   signIn: async () => {},
   signUp: async () => {},
   signOut: async () => {},
+  verifyOtp: async () => {},
   updateToken: async () => {},
 });
 
@@ -93,9 +95,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     name: string,
     avatar?: string
   ) => {
-    const response = await register(name, email, password, avatar);
-    await updateToken(response.token);
-    router.replace("/(main)/home" as any);
+    await register(name, email, password, avatar);
+    router.replace({ pathname: "/(auth)/verifyOtp", params: { email } });
   };
 
   const signOut = async () => {
@@ -105,9 +106,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     router.replace("/(auth)/welcome");
   };
 
+  const verifyOtp = async (email: string, otp: string) => {
+    const response = await verifyEmailOTP(email, otp);
+    if (response.success === false) {
+      Alert.alert("Email Verification", response.message);
+      return;
+    }
+    await updateToken(response.token);
+    router.replace("/(main)/home" as any);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ token, user, signIn, signUp, signOut, updateToken }}
+      value={{ token, user, signIn, signUp, verifyOtp, signOut, updateToken }}
     >
       {children}
     </AuthContext.Provider>

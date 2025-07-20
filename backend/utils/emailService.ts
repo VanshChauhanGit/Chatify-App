@@ -22,8 +22,6 @@ export const sendOTPVerificationEmail = async (
       createdAt: new Date(),
     });
 
-    await newOTPVerification.save();
-
     const { data, error } = await resend.emails.send({
       from: "Chatify <chatify@resend.dev>",
       to: email,
@@ -50,6 +48,13 @@ export const sendOTPVerificationEmail = async (
         </div>
       `,
     });
+
+    if (error) {
+      console.error("Failed to send verification OTP Email:", error);
+      return { data, error };
+    }
+
+    await newOTPVerification.save();
 
     return { data, error };
   } catch (error) {

@@ -35,3 +35,17 @@ export const register = async (
     throw new Error(msg);
   }
 };
+
+export const verifyEmailOTP = async (email: string, otp: string) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/verify-otp`, {
+      email,
+      otp,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.log("got error:", error);
+    const msg = error?.response?.data?.message || "Verification Failed!";
+    throw new Error(msg);
+  }
+};

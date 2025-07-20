@@ -3,7 +3,6 @@ import User from "../models/UserModel";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/token";
 import { sendOTPVerificationEmail } from "../utils/emailService";
-import { log } from "console";
 import UserOTPVerification from "../models/UserOTPVerification";
 
 export const registerUser = async (
@@ -142,14 +141,26 @@ export const verifyEmailOTP = async (
       return;
     }
 
-    // Mark email as verified
-    await User.updateOne({ email }, { isEmailVerified: true });
+    // Mark email as verified and get the updated user
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { isEmailVerified: true },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      throw new Error("User not found while verifying.");
+    }
+
+    // generate JWT token
+    const token = generateToken(updatedUser);
 
     // Delete all OTP records for this user after successful verification
     await UserOTPVerification.deleteMany({ email });
 
     res.status(200).json({
       success: true,
+      token,
       msg: "Email verified successfully!",
     });
   } catch (error) {

@@ -58,6 +58,7 @@ export type AuthContextProps = {
     avatar?: string
   ) => Promise<void>;
   signOut: () => Promise<void>;
+  verifyOtp: (email: string, otp: string) => Promise<void>;
   updateToken: (token: string) => Promise<void>;
 };
 

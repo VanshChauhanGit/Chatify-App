@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const home = () => {
   const { signOut, user } = useAuth();
-  console.log(user);
+  console.log("USER HOME : ", user);
 
   return (
     <ScreenWrapper style={{ paddingHorizontal: 15 }}>
