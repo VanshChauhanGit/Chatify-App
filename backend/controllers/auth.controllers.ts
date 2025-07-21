@@ -102,7 +102,7 @@ export const verifyEmailOTP = async (
 
     // Validate input
     if (!email || !otp) {
-      res.status(400).json({
+      res.json({
         success: false,
         msg: "Email and OTP are required.",
       });
@@ -115,7 +115,7 @@ export const verifyEmailOTP = async (
       .exec();
 
     if (!otpRecord) {
-      res.status(404).json({
+      res.json({
         success: false,
         msg: "No OTP record found for this email.",
       });
@@ -127,7 +127,7 @@ export const verifyEmailOTP = async (
     // Check expiration
     if (new Date() > expiresAt) {
       await UserOTPVerification.deleteMany({ email }); // Clean up expired OTPs
-      res.status(410).json({
+      res.json({
         success: false,
         msg: "OTP has expired. Please request a new one.",
       });
@@ -137,7 +137,7 @@ export const verifyEmailOTP = async (
     // Validate OTP
     const isOtpValid = await bcrypt.compare(otp, hashedOtp);
     if (!isOtpValid) {
-      res.status(401).json({
+      res.json({
         success: false,
         msg: "Invalid OTP. Please try again.",
       });
@@ -152,7 +152,7 @@ export const verifyEmailOTP = async (
     );
 
     if (!updatedUser) {
-      res.status(404).json({
+      res.json({
         success: false,
         msg: "User not found while verifying email.",
       });
@@ -163,14 +163,14 @@ export const verifyEmailOTP = async (
     const token = generateToken(updatedUser);
     await UserOTPVerification.deleteMany({ email });
 
-    res.status(200).json({
+    res.json({
       success: true,
       token,
       msg: "Email verified successfully!",
     });
   } catch (error) {
     console.error("Error during email OTP verification:", error);
-    res.status(500).json({
+    res.json({
       success: false,
       msg: "Something went wrong while verifying OTP. Please try again later.",
     });

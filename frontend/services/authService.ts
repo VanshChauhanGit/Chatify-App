@@ -43,13 +43,9 @@ export const verifyEmailOTP = async (email: string, otp: string) => {
       otp,
     });
 
-    console.log("RESPONSE AT AuthService:::::", response);
-
     return response.data;
   } catch (error: any) {
     console.log("got error:", error);
-    // const msg = error?.response?.data?.message || "Verification Failed!";
-    // throw new Error(msg);
   }
 };
 

@@ -34,33 +34,90 @@ const VerifyOtp = () => {
   const { updateToken } = useAuth();
 
   const handleSubmit = async () => {
-    if (!otp || otp.length !== 6) {
+    if (!otp || otp.trim().length !== 6) {
       setError("Please enter a valid 6-digit OTP.");
       return;
     }
 
     try {
       setIsLoading(true);
-      const response = await verifyEmailOTP(email as string, otp);
+      setError("");
 
-      console.log("Response at VerifyOtp:", response);
+      const response = await verifyEmailOTP(email as string, otp.trim());
 
-      if (response.success == false) {
-        setError(response.msg || "Verification failed");
+      const handleSubmit = async () => {
+        if (!otp || otp.trim().length !== 6) {
+          setError("Please enter a valid 6-digit OTP.");
+          return;
+        }
+
+        try {
+          setIsLoading(true);
+          setError("");
+
+          const response = await verifyEmailOTP(email as string, otp.trim());
+
+          console.log("Response at VerifyOtp:", response);
+
+          // Handle backend-side failure
+          if (!response.success) {
+            setError(response.msg || "Invalid or expired OTP.");
+            return;
+          }
+
+          // Success: Save token and navigate
+          if (response.token) {
+            await updateToken(response.token);
+          }
+
+          router.replace("/(main)/home" as any);
+        } catch (error: any) {
+          const status = error?.response?.status;
+
+          // Only show setError for 400/401 (OTP errors), not Alert
+          if (status === 400 || status === 401) {
+            setError(
+              error?.response?.data?.message || "Invalid or expired OTP."
+            );
+          } else {
+            // Unexpected/server error: show Alert + setError
+            const msg =
+              error?.message ||
+              "Something went wrong. Please check your connection and try again.";
+            Alert.alert("Email Verification", msg);
+            setError(msg);
+          }
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      // Handle backend-side failure
+      if (!response.success) {
+        setError(response.msg);
         return;
       }
 
-      setError("");
-
-      await updateToken(response.token);
+      // Success: Save token and navigate
+      if (response.token) {
+        await updateToken(response.token);
+      }
 
       router.replace("/(main)/home" as any);
     } catch (error: any) {
-      setError(error?.message || "Verification failed");
-      Alert.alert(
-        "Email Verification",
-        error?.message || "Verification failed"
-      );
+      const status = error?.response?.status;
+
+      // Only show setError for 400/401 (OTP errors), not Alert
+      if (status === 400 || status === 401) {
+        setError(error?.response?.data?.message || "Invalid or expired OTP.");
+      } else {
+        // Unexpected/server error: show Alert + setError
+        const msg =
+          error?.message ||
+          "Something went wrong. Please check your connection and try again.";
+        Alert.alert("Email Verification", msg);
+        setError(msg);
+      }
     } finally {
       setIsLoading(false);
     }
