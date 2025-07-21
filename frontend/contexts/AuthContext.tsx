@@ -77,7 +77,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await AsyncStorage.setItem("token", token);
       // decode token (user)
       const decoded = jwtDecode<DecodedTokenProps>(token);
-      console.log("Decoded User : ", decoded);
       setUser(decoded.user);
     }
   };
