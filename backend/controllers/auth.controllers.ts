@@ -44,18 +44,18 @@ export const registerUser = async (
       await User.findByIdAndDelete(savedUser._id);
       res
         .status(500)
-        .json({ success: false, msg: "Failed to send OTP. Please try again." });
+        .json({ success: false, msg: "Failed to send OTP, Please try again." });
       return;
     }
 
     // Send success response
     res.status(200).json({
       success: true,
-      msg: "User registered successfully. OTP sent to email.",
+      msg: "User registered successfully, OTP sent to email.",
     });
   } catch (error) {
     console.error("Error at registerUser:", error);
-    res.status(500).json({ success: false, msg: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error!" });
   }
 };
 
@@ -125,7 +125,7 @@ export const verifyEmailOTP = async (
       await UserOTPVerification.deleteMany({ email }); // Clean up expired OTPs
       res.json({
         success: false,
-        msg: "OTP has expired. Please request a new one.",
+        msg: "OTP has expired, Please request a new one.",
       });
       return;
     }
@@ -135,7 +135,7 @@ export const verifyEmailOTP = async (
     if (!isOtpValid) {
       res.json({
         success: false,
-        msg: "Invalid OTP. Please try again.",
+        msg: "Invalid OTP, Please try again.",
       });
       return;
     }
@@ -168,7 +168,7 @@ export const verifyEmailOTP = async (
     console.error("Error during email OTP verification:", error);
     res.json({
       success: false,
-      msg: "Something went wrong while verifying OTP. Please try again later.",
+      msg: "Something went wrong while verifying OTP, Please try again later.",
     });
   }
 };

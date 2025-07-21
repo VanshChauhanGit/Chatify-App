@@ -8,6 +8,7 @@ export const generateToken = (user: UserProps) => {
       email: user.email,
       name: user.name,
       avatar: user.avatar,
+      isEmailVerified: user.isEmailVerified,
     },
   };
 
