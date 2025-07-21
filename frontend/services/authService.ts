@@ -46,6 +46,8 @@ export const verifyEmailOTP = async (email: string, otp: string) => {
     return response.data;
   } catch (error: any) {
     console.log("got error:", error);
+    const msg = error?.response?.data?.message || "Verification Failed!";
+    throw new Error(msg);
   }
 };
 

@@ -48,13 +48,9 @@ export const registerUser = async (
       return;
     }
 
-    // Generate JWT token
-    const token = generateToken(savedUser);
-
     // Send success response
     res.status(200).json({
       success: true,
-      token,
       msg: "User registered successfully. OTP sent to email.",
     });
   } catch (error) {

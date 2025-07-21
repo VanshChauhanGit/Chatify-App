@@ -72,21 +72,10 @@ const VerifyOtp = () => {
 
           router.replace("/(main)/home" as any);
         } catch (error: any) {
-          const status = error?.response?.status;
-
-          // Only show setError for 400/401 (OTP errors), not Alert
-          if (status === 400 || status === 401) {
-            setError(
-              error?.response?.data?.message || "Invalid or expired OTP."
-            );
-          } else {
-            // Unexpected/server error: show Alert + setError
-            const msg =
-              error?.message ||
-              "Something went wrong. Please check your connection and try again.";
-            Alert.alert("Email Verification", msg);
-            setError(msg);
-          }
+          const msg =
+            error?.message ||
+            "Something went wrong. Please check your connection and try again.";
+          Alert.alert("Email Verification", msg);
         } finally {
           setIsLoading(false);
         }
