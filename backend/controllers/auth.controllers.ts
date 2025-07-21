@@ -97,51 +97,54 @@ export const verifyEmailOTP = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { email, otp } = req.body;
-
   try {
-    // Check if email and OTP are provided
+    const { email, otp } = req.body;
+
+    // Validate input
     if (!email || !otp) {
-      res
-        .status(400)
-        .json({ success: false, msg: "Please provide email and OTP" });
+      res.status(400).json({
+        success: false,
+        msg: "Email and OTP are required.",
+      });
       return;
     }
 
-    // Get the latest OTP record
+    // Get latest OTP for this email
     const otpRecord = await UserOTPVerification.findOne({ email })
       .sort({ createdAt: -1 })
       .exec();
 
-    // If no OTP record found
     if (!otpRecord) {
-      res
-        .status(400)
-        .json({ success: false, msg: "No OTP found for this email" });
+      res.status(404).json({
+        success: false,
+        msg: "No OTP record found for this email.",
+      });
       return;
     }
 
-    const { expiresAt, otp: hashedOtp } = otpRecord;
+    const { otp: hashedOtp, expiresAt } = otpRecord;
 
-    // Check if OTP is expired
-    if (expiresAt < new Date()) {
-      await UserOTPVerification.deleteMany({ email }); // cleanup expired OTPs
-      res
-        .status(400)
-        .json({ success: false, msg: "OTP has expired, please resend OTP!" });
+    // Check expiration
+    if (new Date() > expiresAt) {
+      await UserOTPVerification.deleteMany({ email }); // Clean up expired OTPs
+      res.status(410).json({
+        success: false,
+        msg: "OTP has expired. Please request a new one.",
+      });
       return;
     }
 
-    // Compare the OTP
-    const isMatch = await bcrypt.compare(otp, hashedOtp);
-    if (!isMatch) {
-      res
-        .status(400)
-        .json({ success: false, msg: "Invalid OTP, please try again!" });
+    // Validate OTP
+    const isOtpValid = await bcrypt.compare(otp, hashedOtp);
+    if (!isOtpValid) {
+      res.status(401).json({
+        success: false,
+        msg: "Invalid OTP. Please try again.",
+      });
       return;
     }
 
-    // Mark email as verified and get the updated user
+    // Update user's email verification status
     const updatedUser = await User.findOneAndUpdate(
       { email },
       { isEmailVerified: true },
@@ -149,13 +152,15 @@ export const verifyEmailOTP = async (
     );
 
     if (!updatedUser) {
-      throw new Error("User not found while verifying.");
+      res.status(404).json({
+        success: false,
+        msg: "User not found while verifying email.",
+      });
+      return;
     }
 
-    // generate JWT token
+    // Generate token and clean up OTPs
     const token = generateToken(updatedUser);
-
-    // Delete all OTP records for this user after successful verification
     await UserOTPVerification.deleteMany({ email });
 
     res.status(200).json({
@@ -164,8 +169,11 @@ export const verifyEmailOTP = async (
       msg: "Email verified successfully!",
     });
   } catch (error) {
-    console.error("Error verifying OTP:", error);
-    res.status(500).json({ success: false, msg: "Server error" });
+    console.error("Error during email OTP verification:", error);
+    res.status(500).json({
+      success: false,
+      msg: "Something went wrong while verifying OTP. Please try again later.",
+    });
   }
 };
 
