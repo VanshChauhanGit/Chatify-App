@@ -1,5 +1,10 @@
 import { login, register, verifyEmailOTP } from "@/services/authService";
-import { AuthContextProps, DecodedTokenProps, UserProps } from "@/types";
+import {
+  AuthContextProps,
+  DecodedTokenProps,
+  ResponseProps,
+  UserProps,
+} from "@/types";
 import { useRouter } from "expo-router";
 import {
   createContext,
@@ -15,8 +20,12 @@ import { jwtDecode } from "jwt-decode";
 export const AuthContext = createContext<AuthContextProps>({
   token: null,
   user: null,
-  signIn: async () => {},
-  signUp: async () => {},
+  signIn: async () => {
+    return { success: false, msg: "Not implemented" };
+  },
+  signUp: async () => {
+    return { success: false, msg: "Not implemented" };
+  },
   signOut: async () => {},
   updateToken: async () => {},
 });
@@ -80,10 +89,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signIn = async (email: string, password: string) => {
-    const response = await login(email, password);
-    await updateToken(response.token);
-    router.replace("/(main)/home" as any);
+  const signIn = async (
+    email: string,
+    password: string
+  ): Promise<ResponseProps> => {
+    try {
+      const response = await login(email, password);
+
+      if (!response?.success) {
+        // return {
+        //   success: false,
+        //   msg: response?.msg || "Login failed. Please try again.",
+        // };
+        return response;
+      }
+
+      await updateToken(response.token);
+
+      router.replace("/(main)/home");
+
+      return { success: true };
+    } catch (error: any) {
+      console.error("SignIn error:", error?.message);
+      return {
+        success: false,
+        msg: error?.response?.data?.msg || "Login failed. Please try again.",
+      };
+    }
   };
 
   const signUp = async (
@@ -91,9 +123,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string,
     name: string,
     avatar?: string
-  ) => {
-    await register(name, email, password, avatar);
-    router.replace({ pathname: "/(auth)/verifyOtp", params: { email } });
+  ): Promise<ResponseProps> => {
+    try {
+      const response = await register(name, email, password, avatar);
+
+      if (!response?.success) {
+        return response;
+      }
+
+      router.replace({
+        pathname: "/(auth)/verifyOtp",
+        params: { email },
+      });
+
+      return { success: true };
+    } catch (error: any) {
+      console.error("SignUp error:", error?.message);
+      return {
+        success: false,
+        msg: error?.response?.data?.msg || "Something went wrong. Try again.",
+      };
+    }
   };
 
   const signOut = async () => {

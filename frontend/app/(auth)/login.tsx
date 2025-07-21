@@ -68,13 +68,17 @@ const register = () => {
 
     if (emailErr || passwordErr) {
       setErrors({ email: emailErr, password: passwordErr });
-      Alert.alert("Sign Up", "Please fill all the fields");
       return;
     }
 
     try {
       setIsLoading(true);
-      await signIn(email, password);
+      const response = await signIn(email, password);
+
+      if (!response.success) {
+        Alert.alert("Sign In", response.msg);
+        return;
+      }
     } catch (error: any) {
       Alert.alert("Sign In", error.message);
     } finally {

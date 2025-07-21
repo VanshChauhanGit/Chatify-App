@@ -15,7 +15,10 @@ export const registerUser = async (
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(400).json({ success: false, msg: "User already exists" });
+      res.json({
+        success: false,
+        msg: "User already exists with this email, login instead!",
+      });
       return;
     }
 
@@ -42,14 +45,15 @@ export const registerUser = async (
       console.error("Error sending OTP:", otpError);
       // Optional: Rollback user creation if email failed
       await User.findByIdAndDelete(savedUser._id);
-      res
-        .status(500)
-        .json({ success: false, msg: "Failed to send OTP, Please try again." });
+      res.json({
+        success: false,
+        msg: "Failed to send OTP, Please try again!",
+      });
       return;
     }
 
     // Send success response
-    res.status(200).json({
+    res.json({
       success: true,
       msg: "User registered successfully, OTP sent to email.",
     });
@@ -66,23 +70,24 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(400).json({ success: false, msg: "User not found" });
+      res.json({
+        success: false,
+        msg: "User not found with this email, register first!",
+      });
       return;
     }
 
     // Check if password is correct
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      res.status(400).json({ success: false, msg: "Incorrect password" });
+      res.json({ success: false, msg: "Incorrect password!" });
       return;
     }
 
     // Generate token
     const token = generateToken(user);
 
-    res
-      .status(200)
-      .json({ success: true, token, msg: "User logged in successfully" });
+    res.json({ success: true, token, msg: "User logged in successfully" });
   } catch (error) {
     console.log("Error at loginUser", error);
     res.status(500).json({ success: false, msg: "Server error" });

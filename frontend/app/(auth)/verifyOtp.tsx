@@ -57,8 +57,6 @@ const VerifyOtp = () => {
 
           const response = await verifyEmailOTP(email as string, otp.trim());
 
-          console.log("Response at VerifyOtp:", response);
-
           // Handle backend-side failure
           if (!response.success) {
             setError(response.msg || "Invalid or expired OTP.");
