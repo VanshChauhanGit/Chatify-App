@@ -19,6 +19,7 @@ import { useRouter } from "expo-router";
 import Button from "@/components/Button";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { useAuth } from "@/contexts/AuthContext";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
 
 const validateEmail = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -169,6 +170,17 @@ const register = () => {
                     </Pressable>
                   </View>
                 </View>
+
+                <Typo
+                  color={colors.neutral600}
+                  size={17}
+                  fontWeight={"bold"}
+                  style={{ textAlign: "center" }}
+                >
+                  OR
+                </Typo>
+
+                <GoogleLoginButton />
               </View>
             </ScrollView>
           </Animated.View>
