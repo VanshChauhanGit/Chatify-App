@@ -17,12 +17,12 @@ const Input = (props: InputProps) => {
         props.containerStyle,
         isFocused && { borderColor: colors.primary },
       ]}
-      className="flex-row bg-neutral100 items-center justify-center px-4 py-2 border border-neutral200 rounded-full gap-2"
+      className="flex-row items-center justify-center gap-2 px-4 py-2 border rounded-full bg-neutral100 border-neutral200"
     >
       {props.icon && props.icon}
 
       <TextInput
-        className="flex-1 text-text text-lg"
+        className="flex-1 text-lg text-text"
         placeholderTextColor={colors.neutral500}
         ref={props.inputRef}
         style={props.inputStyle}

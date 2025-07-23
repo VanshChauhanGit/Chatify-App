@@ -97,10 +97,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await login(email, password);
 
       if (!response?.success) {
-        // return {
-        //   success: false,
-        //   msg: response?.msg || "Login failed. Please try again.",
-        // };
         return response;
       }
 

@@ -2,7 +2,6 @@ import "../global.css";
 import { View, StatusBar } from "react-native";
 import React, { useEffect } from "react";
 import Animated, { FadeInDown } from "react-native-reanimated";
-import { useRouter } from "expo-router";
 import ScreenWrapper from "@/components/ScreenWrapper";
 
 const SplashScreen = () => {

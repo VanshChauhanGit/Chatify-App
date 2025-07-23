@@ -9,6 +9,10 @@ const UserSchema = new Schema<UserProps>({
     lowercase: true,
     trim: true,
   },
+  googleId: {
+    type: String,
+    default: null,
+  },
   password: {
     type: String,
     required: true,

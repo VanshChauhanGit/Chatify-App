@@ -4,6 +4,9 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/token";
 import { sendOTPVerificationEmail } from "../utils/emailService";
 import UserOTPVerification from "../models/UserOTPVerification";
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const registerUser = async (
   req: Request,
@@ -197,5 +200,43 @@ export const resendVerifyEmailOTP = async (
   } catch (error) {
     console.error("Error sending OTP:", error);
     res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+
+export const googleLoginUser = async (req: Request, res: Response) => {
+  const { idToken } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload || !payload.email_verified) {
+      return res.json({ success: false, msg: "Invalid Google Token" });
+    }
+
+    const { email, name, picture, sub } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = new User({
+        email,
+        name,
+        avatar: picture,
+        isEmailVerified: true,
+        googleId: sub,
+        password: "",
+      });
+      await user.save();
+    }
+
+    const token = generateToken(user);
+    res.json({ success: true, token, msg: "Logged in with Google!" });
+  } catch (err) {
+    console.error("Google login error:", err);
+    res.status(500).json({ success: false, msg: "Server error!" });
   }
 };
