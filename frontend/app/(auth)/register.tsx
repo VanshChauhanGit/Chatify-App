@@ -140,6 +140,7 @@ const register = () => {
                   <Input
                     placeholder="Enter your name"
                     value={name}
+                    editable={!isLoading}
                     onChangeText={(value) => handleChange("name", value)}
                     icon={
                       <Icon.UserIcon
@@ -158,6 +159,7 @@ const register = () => {
                   <Input
                     placeholder="Enter your email"
                     value={email}
+                    editable={!isLoading}
                     onChangeText={(value) => handleChange("email", value)}
                     icon={
                       <Icon.AtIcon
@@ -177,6 +179,7 @@ const register = () => {
                     placeholder="Enter your password"
                     type="password"
                     value={password}
+                    editable={!isLoading}
                     onChangeText={(value) => handleChange("password", value)}
                     icon={
                       <Icon.LockIcon
