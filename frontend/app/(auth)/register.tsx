@@ -210,16 +210,16 @@ const register = () => {
                   </View>
                 </View>
 
-                <Typo
+                {/* <Typo
                   color={colors.neutral600}
                   size={17}
                   fontWeight={"bold"}
                   style={{ textAlign: "center" }}
                 >
                   OR
-                </Typo>
+                </Typo> */}
 
-                <GoogleLoginButton />
+                {/* <GoogleLoginButton /> */}
               </View>
             </ScrollView>
           </Animated.View>

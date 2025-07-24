@@ -48,9 +48,6 @@ const register = () => {
 
   const router = useRouter();
 
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
-
   const { signIn } = useAuth();
 
   const handleChange = (field: string, value: string) => {
@@ -80,6 +77,7 @@ const register = () => {
         Alert.alert("Sign In", response.msg);
         return;
       }
+      router.replace("/(main)/home");
     } catch (error: any) {
       Alert.alert("Sign In", error.message);
     } finally {
@@ -173,16 +171,16 @@ const register = () => {
                   </View>
                 </View>
 
-                <Typo
+                {/* <Typo
                   color={colors.neutral600}
                   size={17}
                   fontWeight={"bold"}
                   style={{ textAlign: "center" }}
                 >
                   OR
-                </Typo>
+                </Typo> */}
 
-                <GoogleLoginButton />
+                {/* <GoogleLoginButton /> */}
               </View>
             </ScrollView>
           </Animated.View>
