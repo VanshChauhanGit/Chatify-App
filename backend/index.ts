@@ -4,6 +4,7 @@ import http from "http";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
 import authRoutes from "./routes/auth.routes";
+import { initializeSocket } from "./socket/socket";
 
 dotenv.config();
 
@@ -19,6 +20,9 @@ app.get("/", (req, res) => {
 });
 
 const server = http.createServer(app);
+
+// listen to socket events
+initializeSocket(server);
 
 connectDB()
   .then(() => {

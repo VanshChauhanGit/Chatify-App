@@ -23,6 +23,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { verticalScale } from "@/utils/styling";
 import ResendOtpButton from "@/components/ResendOtpButton";
 import { resendVerifyEmailOTP, verifyEmailOTP } from "@/services/authService";
+import { connectSocket } from "@/socket/socket";
 
 const VerifyOtp = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,6 +56,8 @@ const VerifyOtp = () => {
       if (response.token) {
         await updateToken(response.token);
       }
+
+      await connectSocket();
 
       router.replace("/(main)/home" as any);
     } catch (error: any) {
