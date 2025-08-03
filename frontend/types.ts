@@ -90,7 +90,7 @@ export type BackButtonProps = {
 
 export type AvatarProps = {
   size?: number;
-  uri: string | null;
+  uri?: string | null;
   style?: ViewStyle;
   isGroup?: boolean;
 };

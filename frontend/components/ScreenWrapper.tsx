@@ -2,7 +2,6 @@ import { View, Text, ImageBackground, StatusBar, Platform } from "react-native";
 import React, { useEffect } from "react";
 import { ScreenWrapperProps } from "@/types";
 import { colors } from "@/constants/theme";
-import * as SystemUI from "expo-system-ui";
 
 const ScreenWrapper = ({
   style,

@@ -1,6 +1,6 @@
 import { getSocket } from "./socket";
 
-export const testSocket = (payload: any, off: boolean = false) => {
+export const updateProfile = (payload: any, off: boolean = false) => {
   const socket = getSocket();
 
   if (!socket) {
@@ -10,11 +10,11 @@ export const testSocket = (payload: any, off: boolean = false) => {
 
   if (off) {
     // turn of listening to this event
-    socket.off("testSocket", payload);
+    socket.off("updateProfile", payload);
   } else if (typeof payload == "function") {
     // payload as callback for this event
-    socket.on("testSocket", payload);
+    socket.on("updateProfile", payload);
   } else {
-    socket.emit("testSocket", payload); // sending payload as data
+    socket.emit("updateProfile", payload); // sending payload as data
   }
 };

@@ -26,7 +26,9 @@ const Button = ({
     <TouchableOpacity
       onPress={onPress}
       style={[{ height: verticalScale(50), width: "100%" }, style]}
-      className="items-center justify-center bg-primary rounded-full"
+      // className="items-center justify-center rounded-full bg-primary"
+      className={`flex-row items-center justify-center rounded-full bg-primary ${props.disabled && "opacity-50"}`}
+      {...props}
     >
       {children}
     </TouchableOpacity>
