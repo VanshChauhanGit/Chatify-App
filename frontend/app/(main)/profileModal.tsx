@@ -23,6 +23,7 @@ import Button from "@/components/Button";
 import { verticalScale } from "@/utils/styling";
 import { useRouter } from "expo-router";
 import { updateProfile } from "@/socket/socketEvents";
+import * as ImagePicker from "expo-image-picker";
 
 const ProfileModal = () => {
   const { user, signOut, updateToken } = useAuth();
@@ -124,6 +125,21 @@ const ProfileModal = () => {
     setInitialData(data);
   }, [user?.name, user?.email, user?.avatar]);
 
+  const onPickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.5,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setUserData({ ...userData, avatar: result.assets[0] });
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       className="flex-1"
@@ -155,13 +171,11 @@ const ProfileModal = () => {
             }}
           >
             <View className="self-center">
-              <Avatar
-                size={180}
-                uri={
-                  "https://images.unsplash.com/photo-1640951613773-54706e06851d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
-                }
-              />
-              <TouchableOpacity className="absolute p-2 rounded-full shadow-lg right-2 bottom-2 bg-neutral100 shadow-black">
+              <Avatar size={180} uri={userData.avatar} />
+              <TouchableOpacity
+                onPress={onPickImage}
+                className="absolute p-2 rounded-full shadow-lg right-2 bottom-2 bg-neutral100 shadow-black"
+              >
                 <Icon.CameraIcon
                   size={24}
                   weight="bold"
