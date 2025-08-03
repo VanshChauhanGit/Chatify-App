@@ -24,6 +24,7 @@ import { verticalScale } from "@/utils/styling";
 import { useRouter } from "expo-router";
 import { updateProfile } from "@/socket/socketEvents";
 import * as ImagePicker from "expo-image-picker";
+import { uploadFileToCloudinary } from "@/services/imageService";
 
 const ProfileModal = () => {
   const { user, signOut, updateToken } = useAuth();
@@ -82,12 +83,22 @@ const ProfileModal = () => {
       avatar,
     };
 
-    setLoading(true);
+    if (avatar && avatar?.uri) {
+      setLoading(true);
+      const res = await uploadFileToCloudinary(avatar, "profiles");
+      if (res.success) {
+        data.avatar = res.data;
+      } else {
+        Alert.alert("User", res.msg);
+        setLoading(false);
+        return;
+      }
+    }
+
     updateProfile(data);
   };
 
   const processUpdateProfile = (res: any) => {
-    console.log("got res:", res);
     setLoading(false);
 
     if (res.success) {
@@ -132,8 +143,6 @@ const ProfileModal = () => {
       aspect: [1, 1],
       quality: 0.5,
     });
-
-    console.log(result);
 
     if (!result.canceled) {
       setUserData({ ...userData, avatar: result.assets[0] });

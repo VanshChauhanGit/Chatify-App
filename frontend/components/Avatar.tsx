@@ -23,7 +23,7 @@ const Avatar = ({ size = 40, uri, style, isGroup = false }: AvatarProps) => {
         source={getAvatarPath(uri, isGroup)}
         style={{ flex: 1 }}
         contentFit="cover"
-        transition={100}
+        transition={500}
       />
     </View>
   );

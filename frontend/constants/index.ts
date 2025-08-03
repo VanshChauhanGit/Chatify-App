@@ -12,3 +12,6 @@ export const ANDROID_CLIENT_ID =
 export const WEB_CLIENT_ID =
   "834490667497-vm8rohsl67kuu91rha67hr3s058q7ls2.apps.googleusercontent.com";
 export const IOS_CLIENT_ID = "";
+
+export const CLOUDINARY_CLOUD_NAME = "dyx5wayln";
+export const CLOUDINARY_UPLOAD_PRESET = "images";
