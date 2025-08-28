@@ -17,7 +17,7 @@ const Avatar = ({ size = 40, uri, style, isGroup = false }: AvatarProps) => {
         },
         style,
       ]}
-      className="overflow-hidden border-2 rounded-full border-neutral300"
+      className="overflow-hidden rounded-full "
     >
       <Image
         source={getAvatarPath(uri, isGroup)}

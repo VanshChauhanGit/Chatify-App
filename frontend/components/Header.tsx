@@ -5,10 +5,7 @@ import Typo from "./Typo";
 
 const Header = ({ style, leftIcon, rightIcon, title }: HeaderProps) => {
   return (
-    <View
-      style={[style]}
-      className="flex-row items-center justify-between flex-1"
-    >
+    <View style={[style]} className="flex-row items-center justify-between">
       {leftIcon && <View>{leftIcon}</View>}
 
       {title && (

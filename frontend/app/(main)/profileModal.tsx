@@ -163,7 +163,7 @@ const ProfileModal = () => {
               leftIcon={
                 Platform.OS == "android" && <BackButton color={colors.black} />
               }
-              style={{ marginVertical: 10 }}
+              style={{ marginVertical: 10, flex: 1 }}
             />
             <TouchableOpacity onPress={showLogoutAlert} disabled={loading}>
               <Icon.SignOutIcon size={24} weight="bold" color={colors.rose} />
