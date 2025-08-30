@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import Typo from "@/components/Typo";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -20,59 +20,60 @@ import * as ImagePicker from "expo-image-picker";
 import Input from "@/components/Input";
 import { useAuth } from "@/contexts/AuthContext";
 import Button from "@/components/Button";
+import { getContacts } from "@/socket/socketEvents";
 
-const contacts = [
-  {
-    id: "1",
-    name: "Liam Carter",
-    avatar: "https://i.pravatar.cc/150?img=11",
-  },
-  {
-    id: "2",
-    name: "Emma Davis",
-    avatar: "https://i.pravatar.cc/150?img=12",
-  },
-  {
-    id: "3",
-    name: "Noah Smith",
-    avatar: "https://i.pravatar.cc/150?img=13",
-  },
-  {
-    id: "4",
-    name: "Olivia Lee",
-    avatar: "https://i.pravatar.cc/150?img=14",
-  },
-  {
-    id: "5",
-    name: "Mason Taylor",
-    avatar: "https://i.pravatar.cc/150?img=15",
-  },
-  {
-    id: "6",
-    name: "Sophia King",
-    avatar: "https://i.pravatar.cc/150?img=16",
-  },
-  {
-    id: "7",
-    name: "Benjamin Clark",
-    avatar: "https://i.pravatar.cc/150?img=17",
-  },
-  {
-    id: "8",
-    name: "Ava Moore",
-    avatar: "https://i.pravatar.cc/150?img=18",
-  },
-  {
-    id: "9",
-    name: "Logan Walker",
-    avatar: "https://i.pravatar.cc/150?img=19",
-  },
-  {
-    id: "10",
-    name: "Charlotte Harris",
-    avatar: "https://i.pravatar.cc/150?img=20",
-  },
-];
+// const contacts = [
+//   {
+//     id: "1",
+//     name: "Liam Carter",
+//     avatar: "https://i.pravatar.cc/150?img=11",
+//   },
+//   {
+//     id: "2",
+//     name: "Emma Davis",
+//     avatar: "https://i.pravatar.cc/150?img=12",
+//   },
+//   {
+//     id: "3",
+//     name: "Noah Smith",
+//     avatar: "https://i.pravatar.cc/150?img=13",
+//   },
+//   {
+//     id: "4",
+//     name: "Olivia Lee",
+//     avatar: "https://i.pravatar.cc/150?img=14",
+//   },
+//   {
+//     id: "5",
+//     name: "Mason Taylor",
+//     avatar: "https://i.pravatar.cc/150?img=15",
+//   },
+//   {
+//     id: "6",
+//     name: "Sophia King",
+//     avatar: "https://i.pravatar.cc/150?img=16",
+//   },
+//   {
+//     id: "7",
+//     name: "Benjamin Clark",
+//     avatar: "https://i.pravatar.cc/150?img=17",
+//   },
+//   {
+//     id: "8",
+//     name: "Ava Moore",
+//     avatar: "https://i.pravatar.cc/150?img=18",
+//   },
+//   {
+//     id: "9",
+//     name: "Logan Walker",
+//     avatar: "https://i.pravatar.cc/150?img=19",
+//   },
+//   {
+//     id: "10",
+//     name: "Charlotte Harris",
+//     avatar: "https://i.pravatar.cc/150?img=20",
+//   },
+// ];
 
 const NewConversationModal = () => {
   const { isGroup } = useLocalSearchParams();
@@ -81,10 +82,26 @@ const NewConversationModal = () => {
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>(
     []
   );
+  const [contacts, setContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { user: currentUser } = useAuth();
   const isGroupMode = isGroup === "1";
   const router = useRouter();
+
+  useEffect(() => {
+    getContacts(processGetContacts);
+    getContacts(null);
+
+    return () => {
+      getContacts(processGetContacts, true);
+    };
+  }, []);
+
+  const processGetContacts = (res: any) => {
+    if (res.success) {
+      setContacts(res.data);
+    }
+  };
 
   const toggleParticipant = (user: any) => {
     setSelectedParticipants((prev) => {
@@ -175,7 +192,12 @@ const NewConversationModal = () => {
                   onPress={() => onSelectUser(user)}
                 >
                   <Avatar uri={user.avatar} size={50} />
-                  <Typo fontWeight={"600"}>{user.name}</Typo>
+                  <View>
+                    <Typo fontWeight={"600"}>{user.name}</Typo>
+                    <Typo color={colors.neutral400} size={12}>
+                      {user.email}
+                    </Typo>
+                  </View>
 
                   {isGroupMode && (
                     <View className="ml-auto">
@@ -204,7 +226,7 @@ const NewConversationModal = () => {
           </ScrollView>
 
           {isGroupMode && (
-            <View className="absolute bottom-0 left-0 right-0 bg-white p-4 border-t border-neutral200 pb-12">
+            <View className="absolute bottom-0 left-0 right-0 p-4 pb-12 bg-white border-t border-neutral200">
               <Button
                 loading={isLoading}
                 onPress={createGroup}

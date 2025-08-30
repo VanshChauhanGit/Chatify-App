@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import User from "../models/UserModel";
+import User from "../models/User";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/token";
 import { sendOTPVerificationEmail } from "../utils/emailService";
