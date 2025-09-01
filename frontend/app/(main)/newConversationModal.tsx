@@ -23,59 +23,6 @@ import Button from "@/components/Button";
 import { getContacts, newConversation } from "@/socket/socketEvents";
 import { uploadFileToCloudinary } from "@/services/imageService";
 
-// const contacts = [
-//   {
-//     id: "1",
-//     name: "Liam Carter",
-//     avatar: "https://i.pravatar.cc/150?img=11",
-//   },
-//   {
-//     id: "2",
-//     name: "Emma Davis",
-//     avatar: "https://i.pravatar.cc/150?img=12",
-//   },
-//   {
-//     id: "3",
-//     name: "Noah Smith",
-//     avatar: "https://i.pravatar.cc/150?img=13",
-//   },
-//   {
-//     id: "4",
-//     name: "Olivia Lee",
-//     avatar: "https://i.pravatar.cc/150?img=14",
-//   },
-//   {
-//     id: "5",
-//     name: "Mason Taylor",
-//     avatar: "https://i.pravatar.cc/150?img=15",
-//   },
-//   {
-//     id: "6",
-//     name: "Sophia King",
-//     avatar: "https://i.pravatar.cc/150?img=16",
-//   },
-//   {
-//     id: "7",
-//     name: "Benjamin Clark",
-//     avatar: "https://i.pravatar.cc/150?img=17",
-//   },
-//   {
-//     id: "8",
-//     name: "Ava Moore",
-//     avatar: "https://i.pravatar.cc/150?img=18",
-//   },
-//   {
-//     id: "9",
-//     name: "Logan Walker",
-//     avatar: "https://i.pravatar.cc/150?img=19",
-//   },
-//   {
-//     id: "10",
-//     name: "Charlotte Harris",
-//     avatar: "https://i.pravatar.cc/150?img=20",
-//   },
-// ];
-
 const NewConversationModal = () => {
   const { isGroup } = useLocalSearchParams();
   const [groupAvatar, setGroupAvatar] = useState<{ uri: string } | null>(null);
