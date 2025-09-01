@@ -20,7 +20,8 @@ import * as ImagePicker from "expo-image-picker";
 import Input from "@/components/Input";
 import { useAuth } from "@/contexts/AuthContext";
 import Button from "@/components/Button";
-import { getContacts } from "@/socket/socketEvents";
+import { getContacts, newConversation } from "@/socket/socketEvents";
+import { uploadFileToCloudinary } from "@/services/imageService";
 
 // const contacts = [
 //   {
@@ -90,16 +91,38 @@ const NewConversationModal = () => {
 
   useEffect(() => {
     getContacts(processGetContacts);
+    newConversation(processNewConversation);
     getContacts(null);
 
     return () => {
       getContacts(processGetContacts, true);
+      newConversation(processNewConversation, true);
     };
   }, []);
 
   const processGetContacts = (res: any) => {
     if (res.success) {
       setContacts(res.data);
+    }
+  };
+  const processNewConversation = (res: any) => {
+    // console.log("processNewConversation :: ", res);
+    setIsLoading(false);
+    if (res.success) {
+      router.back();
+      router.push({
+        pathname: "/(main)/conversation",
+        params: {
+          id: res.data._id,
+          name: res.data.name,
+          type: res.data.type,
+          avatar: res.data.avatar,
+          participants: JSON.stringify(res.data.participants),
+        },
+      });
+    } else {
+      console.log("Error at fectching/creating conversation: ", res.msg);
+      Alert.alert("Error", res.msg);
     }
   };
 
@@ -121,7 +144,11 @@ const NewConversationModal = () => {
     if (isGroupMode) {
       toggleParticipant(user);
     } else {
-      // todo
+      // start new conversation
+      newConversation({
+        type: "direct",
+        participants: [currentUser?.id, user.id],
+      });
     }
   };
 
@@ -138,7 +165,36 @@ const NewConversationModal = () => {
     }
   };
 
-  const createGroup = () => {};
+  const createGroup = async () => {
+    if (!groupName.trim() || !currentUser || selectedParticipants.length < 2) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      let avatar = null;
+
+      if (groupAvatar) {
+        const res = await uploadFileToCloudinary(groupAvatar, "group-avatars");
+        if (res.success) {
+          avatar = res.data;
+        }
+      }
+
+      newConversation({
+        type: "group",
+        participants: [...selectedParticipants, currentUser.id],
+        name: groupName,
+        avatar,
+      });
+    } catch (error) {
+      console.log("Error at creating group: ", error);
+      Alert.alert("Error", (error as Error)?.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
