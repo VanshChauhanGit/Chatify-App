@@ -17,9 +17,9 @@ const Input = (props: InputProps) => {
         props.containerStyle,
         isFocused && { borderColor: colors.primary },
       ]}
-      className="flex-row items-center justify-center gap-2 px-4 py-2 border rounded-full bg-neutral100 border-neutral200"
+      className="flex-row items-center justify-center gap-2 px-4 py-2 border rounded-full bg-neutral100 border-neutral200 "
     >
-      {props.icon && props.icon}
+      {props.leftIcon && props.leftIcon}
 
       <TextInput
         className="flex-1 text-lg text-text"
@@ -31,6 +31,8 @@ const Input = (props: InputProps) => {
         secureTextEntry={secure}
         {...props}
       />
+
+      {props.rightIcon && props.rightIcon}
 
       {showToggle && (
         <Pressable onPress={toggleSecure}>

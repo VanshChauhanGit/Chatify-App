@@ -16,7 +16,7 @@ import * as Icon from "phosphor-react-native";
 import { useRouter } from "expo-router";
 import ConversationItem from "@/components/ConversationItem";
 import Loader from "@/components/Loader";
-import { getConversations } from "@/socket/socketEvents";
+import { getConversations, newConversation } from "@/socket/socketEvents";
 import { ConversationProps, ResponseProps } from "@/types";
 
 const home = () => {
@@ -45,16 +45,24 @@ const home = () => {
 
   useEffect(() => {
     getConversations(processConversations);
+    newConversation(newConversationHandler);
     getConversations(null);
 
     return () => {
       getConversations(processConversations, true);
+      getConversations(newConversationHandler, true);
     };
   }, []);
 
   const processConversations = (res: ResponseProps) => {
     if (res.success) {
       setConversations(res?.data);
+    }
+  };
+
+  const newConversationHandler = (res: ResponseProps) => {
+    if (res.success && res.data.isNew) {
+      setConversations((prev) => [...prev, res?.data]);
     }
   };
 

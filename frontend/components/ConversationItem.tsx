@@ -46,7 +46,18 @@ const ConversationItem = ({
     return lastMessage?.attachment ? "Attachment" : lastMessage?.content;
   };
 
-  const openConversation = () => {};
+  const openConversation = () => {
+    router.push({
+      pathname: "/(main)/conversation",
+      params: {
+        id: item._id,
+        name: item.name,
+        type: item.type,
+        avatar: item.avatar,
+        participants: JSON.stringify(item.participants),
+      },
+    });
+  };
   return (
     <View>
       <TouchableOpacity
