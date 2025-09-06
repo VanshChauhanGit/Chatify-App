@@ -2,6 +2,47 @@ import { Socket, Server as SocketIOServer } from "socket.io";
 import Conversation from "../models/Conversation";
 
 export function registerChatEvents(io: SocketIOServer, socket: Socket) {
+  socket.on("getConversations", async (data) => {
+    console.log("getConversations event: ", data);
+
+    try {
+      const userId = socket.data.userId;
+
+      if (!userId) {
+        return socket.emit("getConversations", {
+          success: false,
+          msg: "Unauthorized",
+        });
+      }
+
+      const conversations = await Conversation.find({
+        participants: userId,
+      })
+        .sort({ updatedAt: -1 })
+        .populate({
+          path: "lastMessage",
+          select: "content senderid attachment createdAt",
+        })
+        .populate({
+          path: "participants",
+          select: "name avatar email",
+        })
+        .lean();
+
+      socket.emit("getConversations", {
+        success: true,
+        data: conversations,
+        msg: "Conversations fetched successfully",
+      });
+    } catch (error) {
+      console.log("getConversations error:", error);
+      socket.emit("getConversations", {
+        success: false,
+        msg: "Failed get conversations",
+      });
+    }
+  });
+
   socket.on("newConversation", async (data) => {
     console.log("newConversation event: ", data);
 

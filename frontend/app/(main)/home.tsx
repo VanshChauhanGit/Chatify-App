@@ -16,122 +16,47 @@ import * as Icon from "phosphor-react-native";
 import { useRouter } from "expo-router";
 import ConversationItem from "@/components/ConversationItem";
 import Loader from "@/components/Loader";
-
-const conversations = [
-  {
-    name: "Alice",
-    type: "direct",
-    lastMessage: {
-      senderName: "Alice",
-      content: "Hey! Are we still on for tonight?",
-      createdAt: "2025-06-22T18:45:00Z",
-    },
-  },
-  {
-    name: "Project Team",
-    type: "group",
-    lastMessage: {
-      senderName: "Sarah",
-      content: "Meeting rescheduled to 3pm tomorrow and will be online.",
-      createdAt: "2025-06-21T14:10:00Z",
-    },
-  },
-  {
-    name: "John",
-    type: "direct",
-    lastMessage: {
-      senderName: "John",
-      content: "I'll send the files by EOD.",
-      createdAt: "2025-06-28T12:30:00Z",
-    },
-  },
-  {
-    name: "Family Chat",
-    type: "group",
-    lastMessage: {
-      senderName: "Mom",
-      content: "Dinner at 8pm tonight?",
-      createdAt: "2025-06-27T19:20:00Z",
-    },
-  },
-  {
-    name: "Emily",
-    type: "direct",
-    lastMessage: {
-      senderName: "Emily",
-      content: "Happy Birthday!",
-      createdAt: "2025-06-20T09:10:00Z",
-    },
-  },
-  {
-    name: "Developers",
-    type: "group",
-    lastMessage: {
-      senderName: "Raj",
-      content: "Feature branch merged.",
-      createdAt: "2025-06-26T16:05:00Z",
-    },
-  },
-  {
-    name: "Support",
-    type: "direct",
-    lastMessage: {
-      senderName: "Agent",
-      content: "Your ticket has been resolved.",
-      createdAt: "2025-06-25T10:44:00Z",
-    },
-  },
-  {
-    name: "Book Club",
-    type: "group",
-    lastMessage: {
-      senderName: "Tom",
-      content: "Next book suggestion?",
-      createdAt: "2025-06-24T15:11:00Z",
-    },
-  },
-  {
-    name: "Linda",
-    type: "direct",
-    lastMessage: {
-      senderName: "Linda",
-      content: "Can you review my document?",
-      createdAt: "2025-06-23T08:30:00Z",
-    },
-  },
-  {
-    name: "Marketing Team",
-    type: "group",
-    lastMessage: {
-      senderName: "Priya",
-      content: "Campaign draft is ready for feedback.",
-      createdAt: "2025-06-22T11:00:00Z",
-    },
-  },
-];
+import { getConversations } from "@/socket/socketEvents";
+import { ConversationProps, ResponseProps } from "@/types";
 
 const home = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [loading, setLoading] = useState(false);
   const { user: currentUser } = useAuth();
+  const [conversations, setConversations] = useState<ConversationProps[]>([]);
 
   const router = useRouter();
 
   let directConversations = conversations
-    .filter((item: any) => item.type === "direct")
-    .sort((a: any, b: any) => {
+    .filter((item: ConversationProps) => item.type === "direct")
+    .sort((a: ConversationProps, b: ConversationProps) => {
       let aDate = new Date(a?.lastMessage?.createdAt || a.createdAt);
       let bDate = new Date(b?.lastMessage?.createdAt || b.createdAt);
       return bDate.getTime() - aDate.getTime();
     });
 
   let groupConversations = conversations
-    .filter((item: any) => item.type === "group")
-    .sort((a: any, b: any) => {
+    .filter((item: ConversationProps) => item.type === "group")
+    .sort((a: ConversationProps, b: ConversationProps) => {
       let aDate = new Date(a?.lastMessage?.createdAt || a.createdAt);
       let bDate = new Date(b?.lastMessage?.createdAt || b.createdAt);
       return bDate.getTime() - aDate.getTime();
     });
+
+  useEffect(() => {
+    getConversations(processConversations);
+    getConversations(null);
+
+    return () => {
+      getConversations(processConversations, true);
+    };
+  }, []);
+
+  const processConversations = (res: ResponseProps) => {
+    if (res.success) {
+      setConversations(res?.data);
+    }
+  };
 
   return (
     <ScreenWrapper showPattern bgOpacity={0.5}>
@@ -181,7 +106,7 @@ const home = () => {
             {/* Conversation List */}
             <View className="py-5">
               {selectedTab === 0 &&
-                directConversations.map((item: any, index) => {
+                directConversations.map((item: ConversationProps, index) => {
                   return (
                     <ConversationItem
                       key={index}
@@ -192,7 +117,7 @@ const home = () => {
                   );
                 })}
               {selectedTab === 1 &&
-                groupConversations.map((item: any, index) => {
+                groupConversations.map((item: ConversationProps, index) => {
                   return (
                     <ConversationItem
                       key={index}
