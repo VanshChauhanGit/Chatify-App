@@ -5,7 +5,7 @@ import {
   Platform,
   TouchableOpacity,
   FlatList,
-  Touchable,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
@@ -23,6 +23,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Image } from "expo-image";
 import { verticalScale } from "@/utils/styling";
 import Loader from "@/components/Loader";
+import { uploadFileToCloudinary } from "@/services/imageService";
 
 const dummyMessages = [
   {
@@ -192,7 +193,39 @@ const Conversation = () => {
     }
   };
 
-  const onMsgSend = () => {};
+  const onMsgSend = async () => {
+    if (!message.trim() && !selectedFile) return;
+
+    if (!currentUser) return;
+
+    setLoading(true);
+
+    try {
+      let attachment = null;
+
+      if (selectedFile) {
+        const uploadResult = await uploadFileToCloudinary(
+          selectedFile,
+          "message-attachments"
+        );
+
+        if (uploadResult.success) {
+          attachment = uploadResult.data;
+          setSelectedFile(null);
+        } else {
+          setLoading(false);
+          Alert.alert("Error", "Failed to send the message. Please try again.");
+        }
+      }
+
+      console.log("attachment: ", attachment);
+    } catch (error) {
+      console.log("Error at sending message: ", error);
+      Alert.alert("Error", "Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <ScreenWrapper showPattern bgOpacity={0.4}>
