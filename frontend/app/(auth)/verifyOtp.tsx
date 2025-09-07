@@ -122,7 +122,7 @@ const VerifyOtp = () => {
                     value={otp}
                     onChangeText={setOtp}
                     placeholder="Enter OTP"
-                    icon={
+                    leftIcon={
                       <Icon.EnvelopeSimpleIcon
                         size={verticalScale(24)}
                         color={colors.neutral600}

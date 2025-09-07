@@ -122,7 +122,7 @@ const register = () => {
                     value={email}
                     editable={!isLoading}
                     onChangeText={(value) => handleChange("email", value)}
-                    icon={
+                    leftIcon={
                       <Icon.AtIcon
                         size={verticalScale(24)}
                         color={colors.neutral600}
@@ -142,7 +142,7 @@ const register = () => {
                     value={password}
                     editable={!isLoading}
                     onChangeText={(value) => handleChange("password", value)}
-                    icon={
+                    leftIcon={
                       <Icon.LockIcon
                         size={verticalScale(24)}
                         color={colors.neutral600}
