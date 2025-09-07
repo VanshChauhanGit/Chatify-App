@@ -17,6 +17,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { connectSocket, disconnectSocket } from "@/socket/socket";
+import { Alert } from "react-native";
 
 export const AuthContext = createContext<AuthContextProps>({
   token: null,
@@ -97,6 +98,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   ): Promise<ResponseProps> => {
     try {
       const response = await login(email, password);
+
+      if (response?.data?.isEmailVerified === false) {
+        router.replace({
+          pathname: "/(auth)/verifyOtp",
+          params: { email },
+        });
+        return response;
+      }
 
       if (!response?.success) {
         return response;

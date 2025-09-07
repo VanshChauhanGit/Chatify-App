@@ -87,6 +87,19 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    // Check if email is verified
+    if (!user.isEmailVerified) {
+      // Send OTP to email
+      await sendOTPVerificationEmail({ email: user.email }, res);
+
+      res.json({
+        success: false,
+        data: { isEmailVerified: false },
+        msg: "Please verify your email before logging in.",
+      });
+      return;
+    }
+
     // Generate token
     const token = generateToken(user);
 
