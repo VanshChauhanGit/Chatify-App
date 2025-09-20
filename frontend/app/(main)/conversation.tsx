@@ -235,10 +235,6 @@ const Conversation = () => {
 
       setMessage("");
       setSelectedFile(null);
-
-      getMessages({
-        conversationId,
-      });
     } catch (error) {
       console.log("Error at sending message: ", error);
       Alert.alert("Error", "Failed to send message. Please try again.");
@@ -263,7 +259,14 @@ const Conversation = () => {
 
   const newMessageHandler = (res: ResponseProps) => {
     setLoading(false);
-    console.log("newMessageHandler :: ", res);
+
+    if (res.success) {
+      if (res.data.conversationId === conversationId) {
+        setMessages((prev) => [res.data, ...prev]);
+      }
+    } else {
+      Alert.alert("Error", res.msg);
+    }
   };
 
   const messagesHandler = (res: ResponseProps) => {

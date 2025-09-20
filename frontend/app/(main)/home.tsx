@@ -16,7 +16,11 @@ import * as Icon from "phosphor-react-native";
 import { useRouter } from "expo-router";
 import ConversationItem from "@/components/ConversationItem";
 import Loader from "@/components/Loader";
-import { getConversations, newConversation } from "@/socket/socketEvents";
+import {
+  getConversations,
+  newConversation,
+  newMessage,
+} from "@/socket/socketEvents";
 import { ConversationProps, ResponseProps } from "@/types";
 
 const home = () => {
@@ -44,23 +48,46 @@ const home = () => {
     });
 
   useEffect(() => {
+    setLoading(true);
     getConversations(processConversations);
     newConversation(newConversationHandler);
+    newMessage(newMessageHandler);
     getConversations(null);
 
     return () => {
       getConversations(processConversations, true);
       getConversations(newConversationHandler, true);
+      newMessage(newMessageHandler, true);
     };
   }, []);
 
+  const newMessageHandler = (res: ResponseProps) => {
+    setLoading(false);
+    if (res.success) {
+      let conversationId = res.data.conversationId;
+
+      setConversations((prev) => {
+        let updatedConversations = prev.map((item) => {
+          if (item._id === conversationId) {
+            item.lastMessage = res.data;
+          }
+          return item;
+        });
+
+        return updatedConversations;
+      });
+    }
+  };
+
   const processConversations = (res: ResponseProps) => {
+    setLoading(false);
     if (res.success) {
       setConversations(res?.data);
     }
   };
 
   const newConversationHandler = (res: ResponseProps) => {
+    setLoading(false);
     if (res.success && res.data.isNew) {
       setConversations((prev) => [...prev, res?.data]);
     }
@@ -95,7 +122,7 @@ const home = () => {
             contentContainerStyle={{ paddingVertical: spacingY._10 }}
           >
             <View className="flex flex-row items-center px-5">
-              <View className="flex-row flex-1 items-center justify-center gap-2 ">
+              <View className="flex-row items-center justify-center flex-1 gap-2 ">
                 <TouchableOpacity
                   onPress={() => setSelectedTab(0)}
                   className={`bg-neutral100 py-3 px-5 rounded-full ${selectedTab === 0 && "bg-primaryLight"}`}
