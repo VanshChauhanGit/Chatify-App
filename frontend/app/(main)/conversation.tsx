@@ -7,7 +7,7 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { useLocalSearchParams } from "expo-router";
 import { useAuth } from "@/contexts/AuthContext";
@@ -24,6 +24,9 @@ import { Image } from "expo-image";
 import { verticalScale } from "@/utils/styling";
 import Loader from "@/components/Loader";
 import { uploadFileToCloudinary } from "@/services/imageService";
+import { getMessages, newMessage } from "@/socket/socketEvents";
+import { MessageProps, ResponseProps } from "@/types";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const dummyMessages = [
   {
@@ -155,6 +158,7 @@ const dummyMessages = [
 const Conversation = () => {
   const { user: currentUser } = useAuth();
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<MessageProps[]>([]);
   const [selectedFile, setSelectedFile] = useState<{ uri: string } | null>(
     null
   );
@@ -218,12 +222,54 @@ const Conversation = () => {
         }
       }
 
-      console.log("attachment: ", attachment);
+      newMessage({
+        conversationId,
+        sender: {
+          id: currentUser.id,
+          name: currentUser.name,
+          avatar: currentUser.avatar,
+        },
+        content: message.trim(),
+        attachment,
+      });
+
+      setMessage("");
+      setSelectedFile(null);
+
+      getMessages({
+        conversationId,
+      });
     } catch (error) {
       console.log("Error at sending message: ", error);
       Alert.alert("Error", "Failed to send message. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    newMessage(newMessageHandler);
+    getMessages(messagesHandler);
+
+    getMessages({
+      conversationId,
+    });
+
+    return () => {
+      newMessage(newMessageHandler, true);
+      getMessages(messagesHandler, true);
+    };
+  }, []);
+
+  const newMessageHandler = (res: ResponseProps) => {
+    setLoading(false);
+    console.log("newMessageHandler :: ", res);
+  };
+
+  const messagesHandler = (res: ResponseProps) => {
+    console.log("messagesHandler :: ", res);
+    if (res.success) {
+      setMessages(res.data);
     }
   };
 
@@ -274,7 +320,7 @@ const Conversation = () => {
           }}
         >
           <FlatList
-            data={dummyMessages}
+            data={messages}
             inverted={true}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.id}

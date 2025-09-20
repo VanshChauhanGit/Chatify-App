@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Avatar from "./Avatar";
 import Typo from "./Typo";
 import { colors } from "@/constants/theme";
+import moment from "moment";
 
 const MessageItem = ({
   item,
@@ -15,7 +16,11 @@ const MessageItem = ({
 }) => {
   const { user: currentUser } = useAuth();
 
-  const isMe = item.isMe;
+  const isMe = currentUser?.id === item.sender.id;
+
+  const formattedDate = moment(item.createdAt).isSame(moment(), "day")
+    ? moment(item.createdAt).format("h:mm A")
+    : moment(item.createdAt).format("MMM D, h:mm A");
 
   return (
     <View
@@ -38,7 +43,7 @@ const MessageItem = ({
           fontWeight={"500"}
           color={colors.neutral600}
         >
-          {item.createdAt}
+          {formattedDate}
         </Typo>
       </View>
     </View>
