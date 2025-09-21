@@ -183,14 +183,13 @@ const Conversation = () => {
     conversationAvatar = otherParticipant.avatar;
   }
   let conversationName = isDirect ? otherParticipant.name : name;
-  console.log("otherParticipant", otherParticipant);
   let username = isDirect ? otherParticipant.username : null;
 
   const onPickFile = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
       allowsEditing: true,
-      aspect: [1, 1],
+      // aspect: [1, 1],
       quality: 0.5,
     });
 

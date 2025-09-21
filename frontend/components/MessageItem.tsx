@@ -47,7 +47,7 @@ const MessageItem = ({
               aspectRatio: 1,
               borderRadius: 10,
             }}
-            contentFit="cover"
+            contentFit="contain"
           />
         )}
 
