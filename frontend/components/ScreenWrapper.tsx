@@ -19,7 +19,7 @@ const ScreenWrapper = ({
       }}
       // className="px-4"
       imageStyle={{ opacity: showPattern ? bgOpacity : 0 }}
-      source={require("@/assets/images/bgPattern.png")}
+      source={require("@/assets/images/bg_pattern.png")}
     >
       <View style={[{ flex: 1 }, style]}>
         <StatusBar

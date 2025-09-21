@@ -10,7 +10,7 @@ const SplashScreen = () => {
       <View className="items-center justify-center flex-1 ">
         <StatusBar barStyle="light-content" backgroundColor={"transparent"} />
         <Animated.Image
-          source={require("@/assets/images/splashImage.png")}
+          source={require("@/assets/images/splash_image.png")}
           entering={FadeInDown.duration(700).springify()}
           style={{ height: "23%", aspectRatio: 1 }}
         />
