@@ -48,6 +48,7 @@ const MessageItem = ({
               borderRadius: 10,
             }}
             contentFit="contain"
+            transition={300}
           />
         )}
 
