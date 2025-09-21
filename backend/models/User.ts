@@ -9,6 +9,13 @@ const UserSchema = new Schema<UserProps>({
     lowercase: true,
     trim: true,
   },
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    lowercase: true,
+    trim: true,
+  },
   googleId: {
     type: String,
     default: null,

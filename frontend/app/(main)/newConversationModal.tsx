@@ -170,7 +170,7 @@ const NewConversationModal = () => {
                   placeholder="Group Name"
                   value={groupName}
                   onChangeText={setGroupName}
-                  icon={
+                  leftIcon={
                     <Icon.PencilSimpleIcon
                       size={24}
                       weight="bold"
@@ -198,7 +198,7 @@ const NewConversationModal = () => {
                   <View>
                     <Typo fontWeight={"600"}>{user.name}</Typo>
                     <Typo color={colors.neutral400} size={12}>
-                      {user.email}
+                      {user.username}
                     </Typo>
                   </View>
 

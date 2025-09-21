@@ -183,6 +183,8 @@ const Conversation = () => {
     conversationAvatar = otherParticipant.avatar;
   }
   let conversationName = isDirect ? otherParticipant.name : name;
+  console.log("otherParticipant", otherParticipant);
+  let username = isDirect ? otherParticipant.username : null;
 
   const onPickFile = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -270,7 +272,7 @@ const Conversation = () => {
   };
 
   const messagesHandler = (res: ResponseProps) => {
-    console.log("messagesHandler :: ", res);
+    // console.log("messagesHandler :: ", res);
     if (res.success) {
       setMessages(res.data);
     }
@@ -292,9 +294,14 @@ const Conversation = () => {
                 size={40}
                 isGroup={type == "group"}
               />
-              <Typo color={colors.white} size={20} fontWeight={"500"}>
-                {conversationName}
-              </Typo>
+              <View>
+                <Typo color={colors.white} size={20} fontWeight={"500"}>
+                  {conversationName}
+                </Typo>
+                <Typo color={colors.neutral300} size={16} fontWeight={"400"}>
+                  {username}
+                </Typo>
+              </View>
             </View>
           }
           rightIcon={

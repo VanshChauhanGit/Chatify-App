@@ -126,13 +126,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signUp = async (
+    name: string,
+    username: string,
     email: string,
     password: string,
-    name: string,
     avatar?: string
   ): Promise<ResponseProps> => {
     try {
-      const response = await register(name, email, password, avatar);
+      const response = await register(name, username, email, password, avatar);
 
       if (!response?.success) {
         return response;

@@ -20,6 +20,7 @@ export type TypoProps = {
 
 export interface UserProps {
   email: string;
+  username: string;
   name: string;
   avatar?: string | null;
   id?: string;
@@ -53,9 +54,10 @@ export type AuthContextProps = {
   user: UserProps | null;
   signIn: (email: string, password: string) => Promise<ResponseProps>;
   signUp: (
+    name: string,
+    username: string,
     email: string,
     password: string,
-    name: string,
     avatar?: string
   ) => Promise<ResponseProps>;
   signOut: () => Promise<any>;

@@ -71,6 +71,7 @@ export function registerUserEvents(io: SocketIOServer, socket: Socket) {
       const contacts = users.map((user) => ({
         id: user._id.toString(),
         name: user.name,
+        username: user.username,
         email: user.email,
         avatar: user.avatar || "",
       }));

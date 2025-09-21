@@ -51,14 +51,24 @@ const validatePassword = (value: string) => {
   return "";
 };
 
+//username should be at least 3 characters and no spaces and special characters
+const validateUsername = (value: string) => {
+  const usernameRegex = /^[a-zA-Z0-9]{3,}$/;
+  if (!value.trim()) return "Username is required";
+  if (!usernameRegex.test(value)) return "Username is invalid!";
+  return "";
+};
+
 const register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [errors, setErrors] = useState({
     name: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -71,6 +81,9 @@ const register = () => {
     if (field === "name") {
       setName(value);
       setErrors((prev) => ({ ...prev, name: validateName(value) }));
+    } else if (field === "username") {
+      setUsername(value);
+      setErrors((prev) => ({ ...prev, username: validateUsername(value) }));
     } else if (field === "email") {
       setEmail(value);
       setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
@@ -82,17 +95,23 @@ const register = () => {
 
   const handleSubmit = async () => {
     const nameErr = validateName(name);
+    const usernameErr = validateUsername(username);
     const emailErr = validateEmail(email);
     const passwordErr = validatePassword(password);
 
-    if (nameErr || emailErr || passwordErr) {
-      setErrors({ name: nameErr, email: emailErr, password: passwordErr });
+    if (nameErr || emailErr || passwordErr || usernameErr) {
+      setErrors({
+        name: nameErr,
+        username: usernameErr,
+        email: emailErr,
+        password: passwordErr,
+      });
       return;
     }
 
     try {
       setIsLoading(true);
-      const response = await signUp(email, password, name, "");
+      const response = await signUp(name, username, email, password, "");
 
       if (!response.success) {
         Alert.alert("Sign Up", response.msg);
@@ -152,6 +171,25 @@ const register = () => {
                   {errors.name ? (
                     <Typo size={12} color="red">
                       {errors.name}
+                    </Typo>
+                  ) : null}
+                </View>
+                <View>
+                  <Input
+                    placeholder="Enter your username"
+                    value={username}
+                    editable={!isLoading}
+                    onChangeText={(value) => handleChange("username", value)}
+                    leftIcon={
+                      <Icon.IdentificationBadgeIcon
+                        size={verticalScale(24)}
+                        color={colors.neutral600}
+                      />
+                    }
+                  />
+                  {errors.username ? (
+                    <Typo size={12} color="red">
+                      {errors.username}
                     </Typo>
                   ) : null}
                 </View>

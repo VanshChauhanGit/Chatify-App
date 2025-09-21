@@ -2,6 +2,7 @@ import { Document, Types } from "mongoose";
 
 export interface UserProps extends Document {
   email: string;
+  username: string;
   password: string;
   name?: string;
   avatar?: string;

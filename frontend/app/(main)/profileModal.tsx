@@ -169,9 +169,7 @@ const ProfileModal = () => {
               <Icon.SignOutIcon size={24} weight="bold" color={colors.rose} />
             </TouchableOpacity>
           </View>
-
           {/* Form */}
-
           <ScrollView
             contentContainerStyle={{
               gap: spacingY._30,
@@ -192,7 +190,6 @@ const ProfileModal = () => {
                 />
               </TouchableOpacity>
             </View>
-
             <View className="gap-5">
               {/* Email */}
               <View className="gap-2">
@@ -208,7 +205,7 @@ const ProfileModal = () => {
                   }}
                   inputStyle={{ color: colors.neutral700, fontWeight: "bold" }}
                   editable={false}
-                  icon={<Icon.AtIcon size={22} weight="bold" />}
+                  leftIcon={<Icon.AtIcon size={22} weight="bold" />}
                 />
               </View>
               {/* Name */}
@@ -230,7 +227,7 @@ const ProfileModal = () => {
                     color: colors.neutral700,
                     fontWeight: "semibold",
                   }}
-                  icon={<Icon.UserIcon size={22} weight="bold" />}
+                  leftIcon={<Icon.UserIcon size={22} weight="bold" />}
                 />
                 {errors.name && (
                   <Typo size={14} color={colors.rose}>

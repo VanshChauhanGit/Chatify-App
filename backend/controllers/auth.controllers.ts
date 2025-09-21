@@ -12,7 +12,7 @@ export const registerUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { email, password, name, avatar } = req.body;
+  const { email, username, password, name, avatar } = req.body;
 
   try {
     // Check if user already exists
@@ -25,6 +25,16 @@ export const registerUser = async (
       return;
     }
 
+    // Check if username already exists
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      res.json({
+        success: false,
+        msg: "Username already exists, please choose another one.",
+      });
+      return;
+    }
+
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -32,6 +42,7 @@ export const registerUser = async (
     // Create a new user instance (not saved yet)
     const newUser = new User({
       email,
+      username,
       password: hashedPassword,
       name,
       avatar: avatar || "",
