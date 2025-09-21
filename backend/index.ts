@@ -16,7 +16,7 @@ app.use(cors());
 app.use("/auth", authRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello from the backend!");
+  res.send("Hello from the Chatify server!");
 });
 
 const server = http.createServer(app);
