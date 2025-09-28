@@ -36,31 +36,44 @@ This project is nearly complete and serves as a comprehensive example of buildin
 
 ## 📸 Application Screenshots
 
-*(Here you can add your screenshots. Replace the placeholder links with links to your actual images in the repository, perhaps in an `assets` folder.)*
-
 <table>
   <tr>
-    <td align="center"><strong>Login / Signup</strong></td>
+    <td align="center"><strong>Welcome Screen</strong></td>
+    <td align="center"><strong>Sign Up</strong></td>
     <td align="center"><strong>OTP Verification</strong></td>
-    <td align="center"><strong>Chat List (Tabs)</strong></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/user-name/repo-name/main/assets/screenshot1.png" alt="Login Screen" width="250"/></td>
-    <td><img src="https://raw.githubusercontent.com/user-name/repo-name/main/assets/screenshot2.png" alt="OTP Screen" width="250"/></td>
-    <td><img src="https://raw.githubusercontent.com/user-name/repo-name/main/assets/screenshot3.png" alt="Chat List" width="250"/></td>
+    <td><img src="images/welcome_screen.jpg" alt="Welcome Screen" width="250"/></td>
+    <td><img src="images/signup_screen.jpg" alt="Sign Up Screen" width="250"/></td>
+    <td><img src="images/verify_otp_screen.jpg" alt="OTP Verification Screen" width="250"/></td>
   </tr>
   <tr>
-    <td align="center"><strong>One-to-One Chat</strong></td>
+    <td align="center"><strong>Direct Messages</strong></td>
+    <td align="center"><strong>Groups</strong></td>
+    <td align="center"><strong>Update Profile</strong></td>
+  </tr>
+  <tr>
+    <td><img src="images/direct_tab.jpg" alt="Direct Messages Tab" width="250"/></td>
+    <td><img src="images/group_tab.jpg" alt="Groups Tab" width="250"/></td>
+    <td><img src="images/profile_screen.jpg" alt="Profile Screen" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Direct Chat</strong></td>
     <td align="center"><strong>Group Chat</strong></td>
-    <td align="center"><strong>Profile Management</strong></td>
+    <td align="center"><strong>Create Group</strong></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/user-name/repo-name/main/assets/screenshot4.png" alt="Direct Message" width="250"/></td>
-    <td><img src="https://raw.githubusercontent.com/user-name/repo-name/main/assets/screenshot5.png" alt="Group Chat" width="250"/></td>
-    <td><img src="https://raw.githubusercontent.com/user-name/repo-name/main/assets/screenshot6.png" alt="Profile" width="250"/></td>
+    <td><img src="images/direct_chat_screen.jpg" alt="Direct Chat Screen" width="250"/></td>
+    <td><img src="images/grout_chat_screen.jpg" alt="Group Chat Screen" width="250"/></td>
+    <td><img src="images/create_group_screen.jpg" alt="Create Group Screen" width="250"/></td>
+  </tr>
+   <tr>
+    <td align="center" colspan="3"><strong>Select User to Chat</strong></td>
+  </tr>
+    <tr>
+    <td align="center" colspan="3"><img src="images/create_direct_screen.jpg" alt="Select User Screen" width="250"/></td>
   </tr>
 </table>
-
 
 ---
 
@@ -68,21 +81,21 @@ This project is nearly complete and serves as a comprehensive example of buildin
 
 Chatify comes packed with essential features for a modern chat application:
 
-* **⚡ Real-time Messaging:** Instant one-to-one and group messaging powered by **WebSockets** (Socket.IO).
-* **🔐 User Authentication:**
-    * Secure Login & Signup using Email and Password.
-    * Email OTP Verification for new user onboarding via Nodemailer.
-* **👤 Profile Management:**
-    * Users can update their display name.
-    * Ability to upload and change profile pictures, hosted on Cloudinary.
-* **💬 Direct Messaging:**
-    * Real-time one-to-one private conversations.
-* **👨‍👩‍👧‍👦 Group Chats:**
-    * Create new groups with custom names and group images.
-    * Add multiple users to a group upon creation.
-* **📱 Clean & Organized UI:**
-    * Intuitive conversation pages with separate tabs for Direct Messages and Group Chats.
-    * Built with NativeWind for a clean, consistent, and responsive design.
+- **⚡ Real-time Messaging:** Instant one-to-one and group messaging powered by **WebSockets** (Socket.IO).
+- **🔐 User Authentication:**
+  - Secure Login & Signup using Email and Password.
+  - Email OTP Verification for new user onboarding via Nodemailer.
+- **👤 Profile Management:**
+  - Users can update their display name.
+  - Ability to upload and change profile pictures, hosted on Cloudinary.
+- **💬 Direct Messaging:**
+  - Real-time one-to-one private conversations.
+- **👨‍👩‍👧‍👦 Group Chats:**
+  - Create new groups with custom names and group images.
+  - Add multiple users to a group upon creation.
+- **📱 Clean & Organized UI:**
+  - Intuitive conversation pages with separate tabs for Direct Messages and Group Chats.
+  - Built with NativeWind for a clean, consistent, and responsive design.
 
 ---
 
@@ -90,22 +103,22 @@ Chatify comes packed with essential features for a modern chat application:
 
 This project is built with a modern and scalable technology stack.
 
-* **Frontend:**
-    * [React Native](https://reactnative.dev/)
-    * [TypeScript](https://www.typescriptlang.org/)
-    * [NativeWind](https://www.nativewind.dev/)
-* **Backend:**
-    * [Node.js](https://nodejs.org/)
-    * [Express.js](https://expressjs.com/)
-    * [Socket.IO](https://socket.io/) (for WebSocket communication)
-    * [REST APIs](https://restfulapi.net/)
-* **Database:**
-    * [MongoDB](https://www.mongodb.com/) (for user and chat data storage)
-    * [Mongoose](https://mongoosejs.com/) (as ODM)
-* **Services & Authentication:**
-    * [JSON Web Tokens (JWT)](https://jwt.io/) for session management.
-    * [Cloudinary](https://cloudinary.com/) for cloud-based image storage.
-    * [Nodemailer](https://nodemailer.com/) for sending email OTPs.
+- **Frontend:**
+  - [React Native](https://reactnative.dev/)
+  - [TypeScript](https://www.typescriptlang.org/)
+  - [NativeWind](https://www.nativewind.dev/)
+- **Backend:**
+  - [Node.js](https://nodejs.org/)
+  - [Express.js](https://expressjs.com/)
+  - [Socket.IO](https://socket.io/) (for WebSocket communication)
+  - [REST APIs](https://restfulapi.net/)
+- **Database:**
+  - [MongoDB](https://www.mongodb.com/) (for user and chat data storage)
+  - [Mongoose](https://mongoosejs.com/) (as ODM)
+- **Services & Authentication:**
+  - [JSON Web Tokens (JWT)](https://jwt.io/) for session management.
+  - [Cloudinary](https://cloudinary.com/) for cloud-based image storage.
+  - [Nodemailer](https://nodemailer.com/) for sending email OTPs.
 
 ---
 
@@ -116,27 +129,31 @@ To get a local copy up and running, follow these simple steps.
 ### Prerequisites
 
 Make sure you have the following installed on your machine:
-* Node.js (LTS version recommended)
-* npm or yarn
-* MongoDB instance (local or cloud-based like MongoDB Atlas)
-* An active Cloudinary account
-* An email service provider (like Gmail) for Nodemailer
+
+- Node.js (LTS version recommended)
+- npm or yarn
+- MongoDB instance (local or cloud-based like MongoDB Atlas)
+- An active Cloudinary account
+- An email service provider (like Gmail) for Nodemailer
 
 ### Installation
 
 1.  **Clone the repository**
+
     ```sh
     git clone [https://github.com/your-username/chatify.git](https://github.com/your-username/chatify.git)
     cd chatify
     ```
 
 2.  **Install Backend Dependencies**
+
     ```sh
     cd backend
     npm install
     ```
 
 3.  **Install Frontend Dependencies**
+
     ```sh
     cd frontend
     npm install
@@ -145,6 +162,7 @@ Make sure you have the following installed on your machine:
 4.  **Set up Environment Variables**
 
     Create a `.env` file in the `backend` directory and add the following variables:
+
     ```env
     PORT=3000
     MONGO_URI=your_mongodb_connection_string
@@ -158,6 +176,7 @@ Make sure you have the following installed on your machine:
 ### Running the Application
 
 1.  **Start the Backend Server**
+
     ```sh
     cd backend
     npm run dev
@@ -178,25 +197,27 @@ Make sure you have the following installed on your machine:
 
 While Chatify is feature-rich, there's always room for improvement. Here are some planned features:
 
-* **✍️ Typing Indicators:** Show when a user is actively typing in a conversation.
-* **✅ Message Status:** Add message delivery and read receipts (single tick, double tick, blue tick).
-* **🎥 Expanded Media:** Add support for sending video clips and voice messages.
-* **🔔 Push Notifications:** Integrate a service like Firebase Cloud Messaging (FCM) for push notifications.
-* **📞 Audio/Video Calls:** Introduce WebRTC for real-time voice and video communication.
-* **🔒 End-to-End Encryption:** Enhance security with E2EE for all conversations.
+- **✍️ Typing Indicators:** Show when a user is actively typing in a conversation.
+- **✅ Message Status:** Add message delivery and read receipts (single tick, double tick, blue tick).
+- **🎥 Expanded Media:** Add support for sending video clips and voice messages.
+- **🔔 Push Notifications:** Integrate a service like Firebase Cloud Messaging (FCM) for push notifications.
+- **📞 Audio/Video Calls:** Introduce WebRTC for real-time voice and video communication.
+- **🔒 End-to-End Encryption:** Enhance security with E2EE for all conversations.
 
 ---
 
 ## ⚠️ Known Limitations
 
-* Media sharing is limited to images; video and audio messages are not yet supported.
-* No end-to-end encryption is implemented yet.
-* Advanced real-time features like typing indicators and read receipts are still pending.
+- Media sharing is limited to images; video and audio messages are not yet supported.
+- No end-to-end encryption is implemented yet.
+- Advanced real-time features like typing indicators and read receipts are still pending.
 
 ---
 
 ## 👨‍💻 Author
-**Vansh Chauhan** 
+
+**Vansh Chauhan**
+
 <p><a href="https://www.linkedin.com/in/vanshchauhan0/" target="_blank">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
   </a>
