@@ -1,6 +1,6 @@
-<h1 align="center">
-  <img src="images/icon.png" alt="Chatify Logo" width="40" style="vertical-align: middle;"/>
-  <span style="vertical-align: middle;">Chatify</span>
+<h1 align="center" style="display: flex; align-items: center; justify-content: center;">
+  <img src="images/icon.png" alt="Chatify Logo" width="50" style="margin-right: 10px;"/>
+  <span>Chatify</span>
 </h1>
 
 <p align="center">
