@@ -162,6 +162,7 @@ const Conversation = () => {
   const [selectedFile, setSelectedFile] = useState<{ uri: string } | null>(
     null
   );
+  const [msgLoading, setMsgLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const {
     id: conversationId,
@@ -245,6 +246,7 @@ const Conversation = () => {
   };
 
   useEffect(() => {
+    setMsgLoading(true);
     newMessage(newMessageHandler);
     getMessages(messagesHandler);
 
@@ -272,6 +274,7 @@ const Conversation = () => {
 
   const messagesHandler = (res: ResponseProps) => {
     // console.log("messagesHandler :: ", res);
+    setMsgLoading(false);
     if (res.success) {
       setMessages(res.data);
     }
@@ -303,18 +306,19 @@ const Conversation = () => {
               </View>
             </View>
           }
-          rightIcon={
-            <TouchableOpacity className="pr-4">
-              <Icon.DotsThreeOutlineVerticalIcon
-                size={24}
-                color={colors.white}
-                weight="fill"
-              />
-            </TouchableOpacity>
-          }
+          // rightIcon={
+          //   <TouchableOpacity className="pr-4">
+          //     <Icon.DotsThreeOutlineVerticalIcon
+          //       size={24}
+          //       color={colors.white}
+          //       weight="fill"
+          //     />
+          //   </TouchableOpacity>
+          // }
         />
 
         {/* messages */}
+
         <View
           style={{
             flex: 1,
@@ -328,15 +332,21 @@ const Conversation = () => {
             overflow: "hidden",
           }}
         >
-          <FlatList
-            data={messages}
-            inverted={true}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <MessageItem item={item} isDirect={isDirect} />
-            )}
-          />
+          {msgLoading ? (
+            <View className="items-center justify-center flex-1">
+              <Loader />
+            </View>
+          ) : (
+            <FlatList
+              data={messages}
+              inverted={true}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <MessageItem item={item} isDirect={isDirect} />
+              )}
+            />
+          )}
 
           <View className="pt-1 pb-2">
             <Input
@@ -344,7 +354,10 @@ const Conversation = () => {
               value={message}
               onChangeText={setMessage}
               multiline
-              containerStyle={{ borderRadius: radius._20, overflow: "hidden" }}
+              containerStyle={{
+                borderRadius: radius._20,
+                overflow: "hidden",
+              }}
               leftIcon={
                 <TouchableOpacity onPress={onPickFile}>
                   <Icon.FolderSimplePlusIcon
