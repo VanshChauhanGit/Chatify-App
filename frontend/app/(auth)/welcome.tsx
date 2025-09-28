@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, StatusBar } from "react-native";
 import React from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import Typo from "@/components/Typo";
@@ -12,6 +12,7 @@ const Welcome = () => {
   const router = useRouter();
   return (
     <ScreenWrapper showPattern bgOpacity={0.5}>
+      <StatusBar barStyle="light-content" backgroundColor={"transparent"} />
       <View className="items-center flex-1 justify-evenly">
         <Typo color={colors.white} size={43} fontWeight={"900"}>
           Chatify

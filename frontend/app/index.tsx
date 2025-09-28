@@ -3,6 +3,9 @@ import { View, StatusBar } from "react-native";
 import React, { useEffect } from "react";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import ScreenWrapper from "@/components/ScreenWrapper";
+import * as SystemUI from "expo-system-ui";
+
+SystemUI.setBackgroundColorAsync("transparent");
 
 const SplashScreen = () => {
   return (
