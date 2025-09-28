@@ -200,6 +200,6 @@ While Chatify is feature-rich, there's always room for improvement. Here are som
 <p><a href="https://www.linkedin.com/in/vanshchauhan0/" target="_blank">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
   </a>
-  <a href="https://www.vansh-chauhan.netlify.app/" target="_blank">
+  <a href="https://vansh-chauhan.netlify.app/" target="_blank">
     <img src="https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=briefcase&logoColor=white" alt="Portfolio"/>
   </a></p>
