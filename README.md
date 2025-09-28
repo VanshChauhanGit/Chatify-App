@@ -1,17 +1,10 @@
-<!-- <p align="center">
-  <img src="https://raw.githubusercontent.com/user-name/repo-name/main/assets/chatify-logo.png" alt="Chatify Logo" width="150"/>
-</p> -->
-<h1 align="center">Chatify 🚀</h1>
+<h1 align="center">
+  <img src="images/icon.png" alt="Chatify Logo" width="40" style="vertical-align: middle;"/>
+  <span style="vertical-align: middle;">Chatify</span>
+</h1>
 
 <p align="center">
   A modern, mobile-first, full-stack chat application built with React Native and the MERN stack.
-  <!-- <br /> -->
-  <!-- <a href="#-key-features"><strong>Explore the features »</strong></a> -->
-  <!-- <br />
-  <br /> -->
-  <!-- <a href="#-known-limitations">Report Bug</a> -->
-  ·
-  <!-- <a href="#-future-enhancements">Request Feature</a> -->
 </p>
 
 <p align="center">
